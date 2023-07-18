@@ -46,19 +46,19 @@ void view_board()
         tab [y][6] = "N1";
         tab [y][7] = "R1";
 	
-	for(int k=1;k<9;k++)
+	for(char word ='A';word<='H';word++)
 	{
-		if(k==1)
+		if(word=='A')
 		{
 			cout<<"  | ";
 		} 
-		cout<<" "<<k<<" | ";
+		cout<<" "<<word<<" | ";
 	}
 	//displaying chessboard 
 	cout<<endl;
-	char word;
-    for (y=0, word='A';y<8;y++,word++){
-		cout<<word<<" | ";
+
+    for (y=0;y<8;y++){
+		cout<<y+1<<" | ";
 			for(x=0;x<8;x++){
 				cout << tab[y][x] << " | ";
 			}
