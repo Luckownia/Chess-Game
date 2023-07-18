@@ -4,14 +4,13 @@ using namespace std;
 
 void view_board()
 {
-    int x,y;
+    int x,y; //create chessboard tab
 	string tab[8][8];
 	for (y=0;y<8;y++){
 		for(x=0;x<8;x++){
 			tab[y][x] = "##";
 			}
 		}
-
 //chessboard setup
 	y = 0;
 	tab [y][0] = "R2";
@@ -46,10 +45,22 @@ void view_board()
         tab [y][5] = "B1";
         tab [y][6] = "N1";
         tab [y][7] = "R1";
-
-    for (y=0;y<8;y++){
-		for(x=0;x<8;x++){
-			cout << tab[y][x] << "  ";
+	
+	for(int k=1;k<9;k++)
+	{
+		if(k==1)
+		{
+			cout<<"  | ";
+		} 
+		cout<<" "<<k<<" | ";
+	}
+	//displaying chessboard 
+	cout<<endl;
+	char word;
+    for (y=0, word='A';y<8;y++,word++){
+		cout<<word<<" | ";
+			for(x=0;x<8;x++){
+				cout << tab[y][x] << " | ";
 			}
 			cout << "\n";
 		}
