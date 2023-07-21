@@ -5,11 +5,12 @@ using namespace std;
 string tab[8][8];
 class Pionek{
 public:
-	int x_,y_;
-	Pionek(int x,int y)
+	int x_,y_,move_;
+	Pionek(int x,int y,int move)
 	{
 		x_=x;
 		y_=y;
+		move_=move;
 	}
 	void move_pionek()
 	{
@@ -17,17 +18,16 @@ public:
 		bool movable=false;
 		while(movable!=true)
 		{
-			cout<<"Na jaka pozycje X: ";
+			cout<<"On postion X: ";
 			cin>>x;
-			cout<<"Na jaka pozycje Y: ";
+			cout<<"On position Y: ";
 			cin>>y;
-			if(abs(y-y_)==1 || abs(x-x_)) //mozliwe cofanie do naprawy 
+			if((y-y_==1 && move_%2==0)||(y-y_==-1 && move_%2==1) ) //Pionek player 1 and 2 movement 
 			{
 				if(abs(x-x_)>0)
 				{
 					if(tab[y][x]!="##")
 					{
-						cout<<"Yes";
 						movable=true;
 					}
 					else{
@@ -35,30 +35,23 @@ public:
 					}
 				}
 				else{
-					cout<<"Yes";
+					movable=true;
+				}
+			}
+			else if(((y-y_==2 && move_%2==0)||(y-y_==-2 && move_%2==1)) && (y_==1 || y_==6)) //first movement Pionek 
+			{
+				if(abs(x-x_)>0)
+				{
+					cout<<"No";
+				}
+				else{
 					movable=true;
 				}
 			}
 			else{
-				if(abs(y-y_)==2 && (y==1 || y==7))
-				{
-					if(abs(x-x_)>0)
-					{
-						if(tab[y][x]!="##")
-						{
-							cout<<"Yes";
-							movable=true;
-						}
-						else{
-							cout<<"No";
-						}
-					}
-					else{
-						cout<<"Yes";
-						movable=true;
-					}
-				}
+				cout<<"No";
 			}
+			
 			
 		}
 		tab[y][x]=tab[y_][x_];
@@ -135,10 +128,41 @@ void view_board()
 
 int main()
 {
+	int i=3;
     board_setup();
 	view_board();
-	Pionek P1(1,1);
-	P1.move_pionek();
-	view_board();
+	int x,y;
+	while(i<=5)
+	{	
+		if(i%2==1){
+			cout<<"Player 1 move :";
+			cout<<"From position X: ";
+			cin>>x;
+			cout<<"From Position Y: ";
+			cin>>y;
+			if(tab[y][x]=="P1")
+			{
+				Pionek P1(x,y,i);
+				P1.move_pionek();
+				view_board();
+			}
+
+		}
+		else{
+			cout<<"Player 2 move: ";
+			cout<<"From position X: ";
+			cin>>x;
+			cout<<"From Position Y: ";
+			cin>>y;
+			if(tab[y][x]=="P2") //Pionek 
+			{
+				Pionek P1(x,y,i);
+				P1.move_pionek();
+				view_board();
+			}
+		}
+		i++;
+	}
+
     return 0;
 }
