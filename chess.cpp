@@ -22,6 +22,13 @@ public:
 			cin>>x;
 			cout<<"On position Y: ";
 			cin>>y;
+			if((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+			{
+				cout<<"On postion X: ";
+				cin>>x;
+				cout<<"On position Y: ";
+				cin>>y;
+			}
 			if((y-y_==1 && move_%2==0)||(y-y_==-1 && move_%2==1) ) //Pionek player 1 and 2 movement 
 			{
 				if(abs(x-x_)>0)
@@ -59,6 +66,91 @@ public:
 	}
 
 };
+
+
+class Tower{
+	public:
+		int x_;
+		int y_;
+		int counter_;
+		Tower(int x, int y, int counter)
+		{
+			x_=x;
+			y_=y;
+			counter_=counter;
+		}
+		void move_tower()
+		{
+			int x,y;
+			bool movable=false;
+			while(movable!=true)
+			{
+				cout<<"On postion X: ";
+				cin>>x;
+				cout<<"On position Y: ";
+				cin>>y;
+				if((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				{
+					cout<<"On postion X: ";
+					cin>>x;
+					cout<<"On position Y: ";
+					cin>>y;
+				}
+				if(x-x_==0 && y-y_!=0)
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					for(int i=start ; i<=end;i++)
+					{
+							if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="Q2" || tab[i][x]=="B2" || tab[i][x]=="K2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+					}
+				
+				}
+				else if(x-x_!=0 && y-y_==0)
+				{
+					int start = min(x,x_);
+					int end =  max(x_,x);
+					for(int i= start;i<=end;i++)
+					{
+						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[y][i]=="P2" || tab[y][i]=="N2" || tab[y][i]=="Q2" || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+						i++;
+					}
+				}
+				else{
+					cout<<"No";
+				}
+			}	
+			tab[y][x]=tab[y_][x_];
+			tab[y_][x_]="##";
+		}
+
+};
+
 
 void board_setup()
 {
@@ -146,6 +238,12 @@ int main()
 				P1.move_pionek();
 				view_board();
 			}
+			else if(tab[y][x]=="R1")
+			{
+				Tower T1(x,y,i);
+				T1.move_tower();
+				view_board();
+			}
 
 		}
 		else{
@@ -158,6 +256,12 @@ int main()
 			{
 				Pionek P1(x,y,i);
 				P1.move_pionek();
+				view_board();
+			}
+			else if(tab[y][x]=="R2")
+			{
+				Tower T2(x,y,i);
+				T2.move_tower();
 				view_board();
 			}
 		}
