@@ -101,7 +101,7 @@ class Tower{
 					int start = min(y,y_);
 					int end =  max(y_,y);
 
-					for(int i=start ; i<=end;i++)
+					for(int i=start+1 ; i<=end;i++)
 					{
 							if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
 						{
@@ -123,7 +123,7 @@ class Tower{
 				{
 					int start = min(x,x_);
 					int end =  max(x_,x);
-					for(int i= start;i<=end;i++)
+					for(int i= start +1;i<=end;i++)
 					{
 						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
 						{
@@ -138,7 +138,6 @@ class Tower{
 						else{
 							movable=true;
 						}
-						i++;
 					}
 				}
 				else{
@@ -208,6 +207,111 @@ class Goniec{
 				}
 			}
 			tab[y][x]=tab[y_][x_];
+			tab[y_][x_]="##";
+		}
+};
+class Queen{
+	public:
+		int x_,y_,counter_;
+		Queen(int x,int y,int move)
+		{
+			x_=x;
+			y_=y;
+			counter_=move;
+		}
+		void move_queen()
+		{
+			int x,y;
+			bool movable=false;
+			while(movable!=true)
+			{
+				cout<<"On postion X: ";
+				cin>>x;
+				cout<<"On position Y: ";
+				cin>>y;
+				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				{
+					cout<<"On postion X: ";
+					cin>>x;
+					cout<<"On position Y: ";
+					cin>>y;
+				}
+				if(x-x_==0 && y-y_!=0) //movement tower problem !!!!
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					for(int i=(start+1); i<=end;i++)
+					{
+						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="B2" || tab[i][x]=="K2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+					}
+				
+				}
+				else if(x-x_!=0 && y-y_==0)
+				{
+					int start = min(x,x_);
+					int end =  max(x_,x);
+					for(int i= start+1;i<=end;i++)
+					{
+						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[y][i]=="P2" || tab[y][i]=="N2" || tab[y][i]=="Q2" || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+					}
+				}
+				else if(x_-x!=0 && y_-y!=0) //movement bishop
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					int rowDiff = abs(x - x_);
+					int colDiff = abs(y_-y);
+					int rowD = (x > x_) ? 1 : -1; // Kierunek ruchu w pionie
+					int colD = (y > y_) ? 1 : -1; // Kierunek ruchu w poziomie
+					for(int i=1; i<=rowDiff;i++)
+					{
+							if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" || tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" || tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+					}
+				}
+				else{
+					cout<<"Nein";
+				}	
+
+			}
+			tab[y][x]=tab[y_][x_]; //movement 
 			tab[y_][x_]="##";
 		}
 };
@@ -309,6 +413,12 @@ int main()
 				G1.move_tower();
 				view_board();
 			}
+			else if(tab[y][x]=="Q1")
+			{
+				Queen Q1(x,y,i);
+				Q1.move_queen();
+				view_board();
+			}
 
 		}
 		else{
@@ -333,6 +443,12 @@ int main()
 			{
 				Goniec G2(x,y,i);
 				G2.move_tower();
+				view_board();
+			}
+			else if(tab[y][x]=="Q2")
+			{
+				Queen Q2(x,y,i);
+				Q2.move_queen();
 				view_board();
 			}
 		}
