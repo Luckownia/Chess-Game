@@ -236,19 +236,19 @@ class Queen{
 					cout<<"On position Y: ";
 					cin>>y;
 				}
-				if(x-x_==0 && y-y_!=0) //movement tower problem !!!!
+				if(x-x_==0 && y-y_!=0) //movement Queen Tower
 				{
 					int start = min(y,y_);
 					int end =  max(y_,y);
 
 					for(int i=start; i<=end;i++)
 					{
-						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
+						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="R1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
 						{
 							movable=false;
 							cout<<"No";
 						}
-						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="B2" || tab[i][x]=="K2") &&  counter_%2==0)
+						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="B2" || tab[i][x]=="R2"|| tab[i][x]=="K2") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"No";
@@ -312,6 +312,84 @@ class Queen{
 
 			}
 			tab[y][x]=tab[y_][x_]; //movement 
+			tab[y_][x_]="##";
+		}
+};
+class King{
+	public:
+		int x_,y_,counter_;
+		King(int x,int y,int move)
+		{
+			x_=x;
+			y_=y;
+			counter_=move;
+		}
+		void move_king()
+		{
+			int x,y;
+			bool movable=false;
+			while(movable!=true)
+			{
+				cout<<"On postion X: ";
+				cin>>x;
+				cout<<"On position Y: ";
+				cin>>y;
+				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				{
+					cout<<"On postion X: ";
+					cin>>x;
+					cout<<"On position Y: ";
+					cin>>y;
+				}
+				if(x-x_==0 && abs(y-y_)==1)
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					for(int i=start ; i<=end;i++)
+					{
+							if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" || tab[i][x]=="B1" || tab[i][x]=="R1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="Q2" || tab[i][x]=="B2" || tab[i][x]=="R2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+					}
+				
+				}
+				else if(abs(x-x_)==1 && y-y_==0)
+				{
+					int start = min(x,x_);
+					int end =  max(x_,x);
+					for(int i= start;i<=end;i++)
+					{
+						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else if((tab[y][i]=="P2" || tab[y][i]=="N2" || tab[y][i]=="Q2" || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+						else{
+							movable=true;
+						}
+					}
+				}
+				else{
+					cout<<"No";
+				}	
+			}
+			tab[y][x]=tab[y_][x_];
 			tab[y_][x_]="##";
 		}
 };
@@ -387,7 +465,7 @@ int main()
     board_setup();
 	view_board();
 	int x,y;
-	while(i<=5)
+	while(i<=10)
 	{	
 		if(i%2==1){
 			cout<<"Player 1 move :";
@@ -395,7 +473,7 @@ int main()
 			cin>>x;
 			cout<<"From Position Y: ";
 			cin>>y;
-			if(tab[y][x]=="P1")
+			if(tab[y][x]=="P1") // skrocic do 1 razu zamiast 2 osobne dla 2 playerow !
 			{
 				Pionek P1(x,y,i);
 				P1.move_pionek();
@@ -417,6 +495,12 @@ int main()
 			{
 				Queen Q1(x,y,i);
 				Q1.move_queen();
+				view_board();
+			}
+			else if(tab[y][x]=="K1")
+			{
+				King K1(x,y,i);
+				K1.move_king();
 				view_board();
 			}
 
@@ -449,6 +533,12 @@ int main()
 			{
 				Queen Q2(x,y,i);
 				Q2.move_queen();
+				view_board();
+			}
+			else if(tab[y][x]=="K2")
+			{
+				King K2(x,y,i);
+				K2.move_king();
 				view_board();
 			}
 		}
