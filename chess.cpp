@@ -101,7 +101,7 @@ class Tower{
 					int start = min(y,y_);
 					int end =  max(y_,y);
 
-					for(int i=start+1 ; i<=end;i++)
+					for(int i=start ; i<=end;i++)
 					{
 							if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
 						{
@@ -123,7 +123,7 @@ class Tower{
 				{
 					int start = min(x,x_);
 					int end =  max(x_,x);
-					for(int i= start +1;i<=end;i++)
+					for(int i= start;i<=end;i++)
 					{
 						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
 						{
@@ -241,7 +241,7 @@ class Queen{
 					int start = min(y,y_);
 					int end =  max(y_,y);
 
-					for(int i=(start+1); i<=end;i++)
+					for(int i=start; i<=end;i++)
 					{
 						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
 						{
@@ -263,14 +263,14 @@ class Queen{
 				{
 					int start = min(x,x_);
 					int end =  max(x_,x);
-					for(int i= start+1;i<=end;i++)
+					for(int i= start;i<=end;i++)
 					{
-						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
+						if((tab[y][i]=="P1" || tab[y][i]=="N1"  || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
 						{
 							movable=false;
 							cout<<"No";
 						}
-						else if((tab[y][i]=="P2" || tab[y][i]=="N2" || tab[y][i]=="Q2" || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
+						else if((tab[y][i]=="P2" || tab[y][i]=="N2"  || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"No";
