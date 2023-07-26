@@ -393,6 +393,55 @@ class King{
 			tab[y_][x_]="##";
 		}
 };
+class Horse{
+public:
+		int x_,y_,counter_;
+		Horse(int x,int y,int move)
+		{
+			x_=x;
+			y_=y;
+			counter_=move;
+		}
+		void move_horse()
+		{
+			int x,y;
+			bool movable=false;
+			while(movable!=true)
+			{
+				cout<<"On postion X: ";
+				cin>>x;
+				cout<<"On position Y: ";
+				cin>>y;
+				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				{
+					cout<<"On postion X: ";
+					cin>>x;
+					cout<<"On position Y: ";
+					cin>>y;
+				}
+				if(((x==x_-1 || x==x_+1) && (x>=0 & x<8))&&((y==y_+2 || y==y_-2) && (y<8 && y>=0))
+        		||((x==x_-2 || x==x_+2) && (x>=0 & x<8))&&((y==y_+1 || y==y_-1) && (y<8 && y>=0))) {
+					movable=true;
+					if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1"  || tab[y][x]=="R1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"No";
+						}
+					else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2" || tab[y][x]=="R2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"No";
+						}
+				}
+				else{
+					cout<<"Nein";
+				}	
+
+			}
+			tab[y][x]=tab[y_][x_]; //movement 
+			tab[y_][x_]="##";
+		}
+};
 void board_setup()
 {
     int x,y; //create chessboard tab
@@ -503,6 +552,12 @@ int main()
 				K1.move_king();
 				view_board();
 			}
+			else if(tab[y][x]=="N1")
+			{
+				Horse H1(x,y,i);
+				H1.move_horse();
+				view_board();
+			}
 
 		}
 		else{
@@ -539,6 +594,12 @@ int main()
 			{
 				King K2(x,y,i);
 				K2.move_king();
+				view_board();
+			}
+			else if(tab[y][x]=="N2")
+			{
+				Horse H2(x,y,i);
+				H2.move_horse();
 				view_board();
 			}
 		}
