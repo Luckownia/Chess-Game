@@ -35,8 +35,8 @@ public:
 				{
 					if(tab[y][x]!="##" )
 					{
-						if(((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1") &&  move_%2==1)
-						|| (tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2") &&  move_%2==0)
+						if(((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1" ||  tab[y][x]=="R1") &&  move_%2==1)
+						|| (tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2" ||  tab[y][x]=="R2") &&  move_%2==0)
 						{
 							cout<<"You can't beat your own figure! :"<<tab[y][x]<<endl;
 							movable=false;
@@ -69,8 +69,8 @@ public:
 					cout<<"No";
 				}
 				else{
-					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1"
-						|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2")
+					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1" ||  tab[y][x]=="R1"
+						|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2" ||  tab[y][x]=="R2")
 					{
 						movable=false;
 					}
@@ -125,7 +125,7 @@ class Tower{
 					int start = min(y,y_);
 					int end =  max(y_,y);
 
-					for(int i=start ; i<=end;i++)//Zabezpieczenie przed zbiciem wlasnych figur nie dziala
+					for(int i=start ; i<=end;i++)//Zabezpieczenie przed zbiciem R1 R1 !
 					{
 						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" || tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==1)
 						{
@@ -204,7 +204,7 @@ class Goniec{
 					cout<<"On position Y: ";
 					cin>>y;
 				}
-				if(x_-x!=0 && y_-y!=0)
+				if(abs(x_-x)==abs(y_-y))
 				{
 					int start = min(y,y_);
 					int end =  max(y_,y);
@@ -215,13 +215,13 @@ class Goniec{
 					int colD = (y > y_) ? 1 : -1; // Kierunek ruchu w poziomie
 					for(int i=1; i<=rowDiff;i++)
 					{
-						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" || tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1") &&  counter_%2==1)
+						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" || tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==1)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
 							break;
 						}
-						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" || tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2") &&  counter_%2==0)
+						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" || tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
@@ -297,13 +297,13 @@ class Queen{
 					int end =  max(x_,x);
 					for(int i= start;i<=end;i++)
 					{
-						if((tab[y][i]=="P1" || tab[y][i]=="N1"  || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
+						if((tab[y][i]=="P1" || tab[y][i]=="N1"  || tab[y][i]=="B1" || tab[y][i]=="K1" || tab[y][i]=="R1" ) &&  counter_%2==1)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
 							break;
 						}
-						else if((tab[y][i]=="P2" || tab[y][i]=="N2"  || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
+						else if((tab[y][i]=="P2" || tab[y][i]=="N2"  || tab[y][i]=="B2" || tab[y][i]=="K2" || tab[y][i]=="R2") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
@@ -314,7 +314,7 @@ class Queen{
 						}
 					}
 				}
-				else if(x_-x!=0 && y_-y!=0) //movement bishop
+				else if(abs(x_-x)==abs(y_-y)) //movement bishop
 				{
 					int start = min(y,y_);
 					int end =  max(y_,y);
@@ -325,13 +325,13 @@ class Queen{
 					int colD = (y > y_) ? 1 : -1; // Kierunek ruchu w poziomie
 					for(int i=1; i<=rowDiff;i++)
 					{
-							if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" || tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1") &&  counter_%2==1)
+							if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="R1" || tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1") &&  counter_%2==1)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
 							break;
 						}
-						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" || tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2") &&  counter_%2==0)
+						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="R2" || tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
@@ -379,55 +379,57 @@ class King{
 				}
 				if(x-x_==0 && abs(y-y_)==1)
 				{
-					int start = min(y,y_);
-					int end =  max(y_,y);
 
-					for(int i=start ; i<=end;i++)
-					{
-						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" || tab[i][x]=="B1" || tab[i][x]=="R1") &&  counter_%2==1)
+						if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="R1") &&  counter_%2==1)
 						{
 							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
+							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
 							
 						}
-						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="Q2" || tab[i][x]=="B2" || tab[i][x]=="R2") &&  counter_%2==0)
+						else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="R2") &&  counter_%2==0)
 						{
 							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
+							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
 						}
 						else{
 							movable=true;
 						}
-					}
 				
 				}
 				else if(abs(x-x_)==1 && y-y_==0)
 				{
-					int start = min(x,x_);
-					int end =  max(x_,x);
-					for(int i= start;i<=end;i++)
-					{
-						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1" || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==1)
+					if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="R1") &&  counter_%2==1)
 						{
 							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
+							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
 						}
-						else if((tab[y][i]=="P2" || tab[y][i]=="N2" || tab[y][i]=="Q2" || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==0)
+						else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="R2") &&  counter_%2==0)
 						{
 							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
+							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
 						}
 						else{
 							movable=true;
 						}
-					}
+				}
+				else if(abs(x-x_)==1 && abs(y-y_)==1)
+				{
+					if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="R1") &&  counter_%2==1)
+						{
+							movable=false;
+							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
+						}
+						else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="R2") &&  counter_%2==0)
+						{
+							movable=false;
+							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
+						}
+						else{
+							movable=true;
+						}
 				}
 				else{
-					cout<<"No";
+					cout<<"Inappropriate move try again!:"<<endl;
 				}	
 			}
 			tab[y][x]=tab[y_][x_];
