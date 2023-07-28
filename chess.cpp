@@ -467,17 +467,19 @@ public:
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
-							break;
 						}
 					else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2" || tab[y][x]=="R2") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
-							break;
 						}
+					else{
+							movable=true;
+					}
 				}
 				else{
 					cout<<"Inappropriate move try again !";
+					movable=false;
 				}	
 
 			}
