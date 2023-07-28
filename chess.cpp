@@ -51,10 +51,11 @@ public:
 					}
 				}
 				else{
-					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1"
-						|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2")
+					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1" ||  tab[y][x]=="R1"
+						|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2" ||  tab[y][x]=="R2")
 					{
 						movable=false;
+						cout<<"You can't beat this figure! :"<<tab[y][x]<<endl;
 					}
 					else{
 						movable=true;
