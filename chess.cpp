@@ -51,7 +51,14 @@ public:
 					}
 				}
 				else{
-					movable=true;
+					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1"
+						|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2")
+					{
+						movable=false;
+					}
+					else{
+						movable=true;
+					}
 				}
 			}
 			else if(((y-y_==2 && move_%2==0)||(y-y_==-2 && move_%2==1)) && (y_==1 || y_==6)) //first movement Pionek 
@@ -61,11 +68,18 @@ public:
 					cout<<"No";
 				}
 				else{
-					movable=true;
+					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1"
+						|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2")
+					{
+						movable=false;
+					}
+					else{
+						movable=true;
+					}
 				}
 			}
 			else{
-				cout<<"No";
+				cout<<"Inappropriate move try again!"<<endl;
 			}
 			
 			
@@ -544,7 +558,7 @@ int main()
 	int x,y;
 	while(i<=100)
 	{	
-		if(i%2==1){
+		if(i%2==1){ //skipniecie kolejki kiedy ktos zle zaznaczy pionka do naprawy !
 			cout<<"Player 1 move :";
 			cout<<"From position X: ";
 			cin>>x;
