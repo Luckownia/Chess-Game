@@ -563,12 +563,28 @@ int main()
 	int x,y;
 	while(i<=100)
 	{	
-		if(i%2==1){ //skipniecie kolejki kiedy ktos zle zaznaczy pionka do naprawy !
-			cout<<"Player 1 move :";
-			cout<<"From position X: ";
-			cin>>x;
-			cout<<"From Position Y: ";
-			cin>>y;
+		if(i%2==1){ 
+				cout<<"Player 1 move :"<<endl;
+				cout<<"From position X: ";
+				cin>>x;
+				cout<<"From Position Y: ";
+				cin>>y;
+				if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" || tab[y][x]=="B1" || tab[y][x]=="K1"  || tab[y][x]=="R1")
+				{
+					cout<<"Move: "<<tab[y][x]<<endl;
+				}
+				else{
+					while(tab[y][x]!="P1" && tab[y][x]!="N1" && tab[y][x]!="Q1" && tab[y][x]!="B1" && tab[y][x]!="K1" && tab[y][x]!="R1")
+					{
+						cout<<"Inappropriate move! Choose your figures! Unable move from: "<<tab[y][x]<<" for Player 1. Try again"<<endl;
+						cout<<"Player 1 move :"<<endl;
+						cout<<"From position X: ";
+						cin>>x;
+						cout<<"From Position Y: ";
+						cin>>y;
+					}
+				}
+			
 			if(tab[y][x]=="P1") // skrocic do 1 razu zamiast 2 osobne dla 2 playerow !
 			{
 				Pionek P1(x,y,i);
@@ -608,11 +624,27 @@ int main()
 
 		}
 		else{
-			cout<<"Player 2 move: ";
-			cout<<"From position X: ";
-			cin>>x;
-			cout<<"From Position Y: ";
-			cin>>y;
+				cout<<"Player 2 move: "<<endl;
+				cout<<"From position X: ";
+				cin>>x;
+				cout<<"From Position Y: ";
+				cin>>y;
+				if(tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" || tab[y][x]=="B2" || tab[y][x]=="K2"  || tab[y][x]=="R2")
+				{
+					cout<<"Move: "<<tab[y][x]<<endl;
+				}
+				else{
+					while(tab[y][x]!="P2" && tab[y][x]!="N2" && tab[y][x]!="Q2" && tab[y][x]!="B2" && tab[y][x]!="K2"  && tab[y][x]!="R2")
+					{
+						cout<<"Inappropriate move! Choose your figures! Unable move from: "<<tab[y][x]<<" for Player 2. Try again"<<endl;
+						cout<<"Player 2 move :"<<endl;
+						cout<<"From position X: ";
+						cin>>x;
+						cout<<"From Position Y: ";
+						cin>>y;
+					}
+				}
+			
 			if(tab[y][x]=="P2") //Pionek 
 			{
 				Pionek P1(x,y,i);
