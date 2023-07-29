@@ -22,7 +22,7 @@ public:
 			cin>>x;
 			cout<<"On position Y: ";
 			cin>>y;
-			while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+			while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
 			{
 				cout<<"On postion X: ";
 				cin>>x;
@@ -49,7 +49,7 @@ public:
 
 					}
 					else{
-						cout<<"No";
+						cout<<"Inappropriate move! Try again! "<<endl;
 					}
 				}
 				else{
@@ -119,7 +119,7 @@ class Tower{
 				cin>>x;
 				cout<<"On position Y: ";
 				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board 
 				{
 					cout<<"On postion X: ";
 					cin>>x;
@@ -131,17 +131,17 @@ class Tower{
 					int start = min(y,y_);
 					int end =  max(y_,y);
 
-					for(int i=start ; i<=end;i++)//Zabezpieczenie przed zbiciem R1 R1 !
+					for(int i=start ; i<=end;i++)
 					{
 						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" 
-						|| tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==0)
+						|| tab[i][x]=="B1" || tab[i][x]=="K1" || tab[y][x]=="R1") &&  counter_%2==0)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
 							break;
 						}
 						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="Q2" 
-						|| tab[i][x]=="B2" || tab[i][x]=="K2") &&  counter_%2==1)
+						|| tab[i][x]=="B2" || tab[i][x]=="K2" || tab[y][x]=="R2") &&  counter_%2==1)
 						{
 							movable=false;
 							cout<<"You can't beat your own figure! : "<<tab[i][x]<<endl;
@@ -207,7 +207,7 @@ class Goniec{
 				cin>>x;
 				cout<<"On position Y: ";
 				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
 				{
 					cout<<"On postion X: ";
 					cin>>x;
@@ -221,8 +221,8 @@ class Goniec{
 
 					int rowDiff = abs(x - x_);
 					int colDiff = abs(y_-y);
-					int rowD = (x > x_) ? 1 : -1; // Kierunek ruchu w pionie
-					int colD = (y > y_) ? 1 : -1; // Kierunek ruchu w poziomie
+					int rowD = (x > x_) ? 1 : -1; // Upright movement 
+					int colD = (y > y_) ? 1 : -1; // Horizontaly movement 
 					for(int i=1; i<=rowDiff;i++)
 					{
 						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
@@ -271,7 +271,7 @@ class Queen{
 				cin>>x;
 				cout<<"On position Y: ";
 				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
 				{
 					cout<<"On postion X: ";
 					cin>>x;
@@ -479,7 +479,7 @@ public:
 				cin>>x;
 				cout<<"On position Y: ";
 				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
 				{
 					cout<<"On postion X: ";
 					cin>>x;
@@ -523,7 +523,7 @@ void board_setup()
 			tab[y][x] = "##";
 			}
 		}
-//chessboard setup
+	//chessboard setup
 	y = 0;
 	tab [y][0] = "R2";
 	tab [y][1] = "N2";
