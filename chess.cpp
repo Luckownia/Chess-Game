@@ -561,24 +561,24 @@ void board_setup()
 
 void view_board()
 {
-	for(char word ='A';word<='H';word++)
-	{
-		if(word=='A')
+	//displaying chessboard
+    for (int y=-1;y<8;y++){
+		if(y==-1)
 		{
 			cout<<"Y/X| ";
-		} 
-		cout<<" "<<word<<" | ";
-	}
-	//displaying chessboard 
-	cout<<endl;
-
-    for (int y=0;y<8;y++){
-		cout<<" "<<y+1<<" | ";
+			for(int z=1;z<=8;z++){
+				cout << z << "  | ";
+			}
+			cout<<endl;
+		}
+		else{
+			cout<<" "<<y+1<<" | ";
 			for(int x=0;x<8;x++){
 				cout << tab[y][x] << " | ";
 			}
 			cout << "\n";
 		}
+	}
 }
 
 int main()
