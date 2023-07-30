@@ -26,7 +26,7 @@ public:
 			return false;
 		}
 	}
-	bool ifMove(){
+	bool ifMove(){ //checking if figure isn't blocked
 		if(move_%2==0 && tab[y_-1][x_]=="##") //player1 verticaly
 		{
 			return true;
@@ -42,7 +42,7 @@ public:
 				return false;
 			}
 		}
-		else if(move_%2==1 && tab[y_+1][x_]=="##"){ //player 2
+		else if(move_%2==1 && tab[y_+1][x_]=="##"){ //player 2 verticaly
 			return true;
 		}	
 		else if(move_%2==1 &&((tab[y_+1][x_+1]!="##" && (x_<7 && y_<7 )) ||(tab[y_+1][x_-1]!="##" &&(x_>0 && y_<7))))
@@ -65,23 +65,14 @@ public:
 		bool movable=false;
 		while(movable!=true)
 		{
-			x,y=-1; // set value to launch while 
-			while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
+			do  //prevent from escape player chess board
 			{
 				cout<<"On postion X: ";
 				cin>>x;
 				cout<<"On position Y: ";
-				cin>>y;
-				/* Zrobic osoban funkcje wyłowić z tej klasy sprawdzajaca czy mozna sie ruszyc 
-				if(((tab[y_-1][x_]!="##" || tab[y_-1][x_+1]=="##" || tab[y_-1][x_-1]=="##") && move_%2==0 )
-				||((tab[y_+1][x_]!="##" || tab[y_+1][x_+1]=="##" || tab[y_+1][x_-1]=="##") && move_%2==1 ))
-				{
-					cout<<"You can't move anywhere this figure, choose another one or move other figure to be able to!"<<endl;
-				}
-				*/
-				//checking if figure can move anywhere (if it's not blocked)
-				
-			}
+				cin>>y;	
+			} while((x<0||x>8)||(y<0||y>8));
+
 			if((y-y_==1 && move_%2==1)||(y-y_==-1 && move_%2==0) ) //Pionek player 1 and 2 movement 
 			{
 				if(abs(x-x_)>0)
@@ -161,17 +152,14 @@ class Tower{
 			bool movable=false;
 			while(movable!=true)
 			{
-				cout<<"On postion X: ";
-				cin>>x;
-				cout<<"On position Y: ";
-				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board 
+				do //prevent from escape player chess board 
 				{
 					cout<<"On postion X: ";
 					cin>>x;
 					cout<<"On position Y: ";
 					cin>>y;
-				}
+				} while((x<0||x>8)||(y<0||y>8));
+
 				if(x-x_==0 && y-y_!=0) 
 				{
 					int start = min(y,y_);
@@ -249,17 +237,14 @@ class Goniec{
 			bool movable=false;
 			while(movable!=true)
 			{
-				cout<<"On postion X: ";
-				cin>>x;
-				cout<<"On position Y: ";
-				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
+				do //prevent from escape player chess board
 				{
 					cout<<"On postion X: ";
 					cin>>x;
 					cout<<"On position Y: ";
 					cin>>y;
-				}
+				} while((x<0||x>8)||(y<0||y>8));
+
 				if(abs(x_-x)==abs(y_-y))
 				{
 					int start = min(y,y_);
@@ -313,17 +298,13 @@ class Queen{
 			bool movable=false;
 			while(movable!=true)
 			{
-				cout<<"On postion X: ";
-				cin>>x;
-				cout<<"On position Y: ";
-				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
+				do //prevent from escape player chess board
 				{
 					cout<<"On postion X: ";
 					cin>>x;
 					cout<<"On position Y: ";
 					cin>>y;
-				}
+				} while((x<0||x>8)||(y<0||y>8));
 				if(x-x_==0 && y-y_!=0) //movement Queen Tower
 				{
 					int start = min(y,y_);
@@ -430,17 +411,14 @@ class King{
 			bool movable=false;
 			while(movable!=true)
 			{
-				cout<<"On postion X: ";
-				cin>>x;
-				cout<<"On position Y: ";
-				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //zabezpieczenie przed wyjsciem z szachownicy 
+				do  //zabezpieczenie przed wyjsciem z szachownicy 
 				{
 					cout<<"On postion X: ";
 					cin>>x;
 					cout<<"On position Y: ";
 					cin>>y;
-				}
+				} while((x<0||x>8)||(y<0||y>8));
+
 				if(x-x_==0 && abs(y-y_)==1)
 				{
 
@@ -521,17 +499,14 @@ public:
 			bool movable=false;
 			while(movable!=true)
 			{
-				cout<<"On postion X: ";
-				cin>>x;
-				cout<<"On position Y: ";
-				cin>>y;
-				while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
+				do  //prevent from escape player chess board
 				{
 					cout<<"On postion X: ";
 					cin>>x;
 					cout<<"On position Y: ";
 					cin>>y;
-				}
+				} while((x<0||x>8)||(y<0||y>8));
+				
 				if(((x==x_-1 || x==x_+1) && (x>=0 & x<8))&&((y==y_+2 || y==y_-2) && (y<8 && y>=0))
         		||((x==x_-2 || x==x_+2) && (x>=0 & x<8))&&((y==y_+1 || y==y_-1) && (y<8 && y>=0))) 
 				{
@@ -638,13 +613,11 @@ int main()
 	{	
 		bool ifmove =false;
 		counter=0; //while working until someone choose their own figures 
-			do
+			while(ifmove!=true)
 			{
-				x=-1,y=-1;
-				if(tab[y][x]!=("P"+to_string(i%2+1)) && tab[y][x]!=("N"+to_string(i%2+1)) && tab[y][x]!=("Q"+to_string(i%2+1))
-				&& tab[y][x]!=("B"+to_string(i%2+1)) && tab[y][x]!=("K"+to_string(i%2+1))  && tab[y][x]!=("R"+to_string(i%2+1)))
+				do
 				{
-					if(counter>0) //skip when it's first move player 
+					if(counter>0) //skip when it's first player's move  
 					{
 						cout<<"Inappropriate move! Choose your figures! Unable move from: "<<tab[y][x]<<" for Player "<<i%2+1<<". Try again!"<<endl;
 					}
@@ -654,6 +627,8 @@ int main()
 					cout<<"From Position Y: ";
 					cin>>y;
 					counter++;
+				} while(tab[y][x]!=("P"+to_string(i%2+1)) && tab[y][x]!=("N"+to_string(i%2+1)) && tab[y][x]!=("Q"+to_string(i%2+1))
+				&& tab[y][x]!=("B"+to_string(i%2+1)) && tab[y][x]!=("K"+to_string(i%2+1))  && tab[y][x]!=("R"+to_string(i%2+1)));
 
 					cout<<"Where do you want to move: "<<tab[y][x]<<endl;
 					//creating class appropriate to chosen figure 	
@@ -707,8 +682,7 @@ int main()
 						view_board();
 						ifmove=true;
 					}
-				}
-			}while(ifmove!=true);
+			}
 		i++;
 	}
 
