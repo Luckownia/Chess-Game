@@ -12,22 +12,75 @@ public:
 		y_=y;
 		move_=move;
 	}
+
+	bool check_route(int x,int y)
+	{
+		int i=move_;
+		if(tab[y][x]!=("P"+to_string(i%2+1)) && tab[y][x]!=("N"+to_string(i%2+1)) && tab[y][x]!=("Q"+to_string(i%2+1))
+		&& tab[y][x]!=("B"+to_string(i%2+1)) && tab[y][x]!=("K"+to_string(i%2+1))  && tab[y][x]!=("R"+to_string(i%2+1)))
+		{
+			return true;
+		}
+		else{
+			cout<<"You can't beat your own figure! :"<<tab[y][x]<<endl;
+			return false;
+		}
+	}
+	bool ifMove(){
+		if(move_%2==0 && tab[y_-1][x_]=="##") //player1 verticaly
+		{
+			return true;
+		}
+		//player 1 diagonially 
+		else if(move_%2==0 && ((tab[y_-1][x_-1]!="##" && (x_>0 && y_>0 )) || (tab[x_+1][y_-1]!="##" &&(x_<7 && y_>0))))
+		{
+			if(check_route(x_-1,y_-1) || check_route(x_+1,y_-1))
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else if(move_%2==1 && tab[y_+1][x_]=="##"){ //player 2
+			return true;
+		}	
+		else if(move_%2==1 &&((tab[y_+1][x_+1]!="##" && (x_<7 && y_<7 )) ||(tab[y_+1][x_-1]!="##" &&(x_>0 && y_<7))))
+		{
+			if(check_route(x_+1,y_+1) || check_route(x_-1,y_+1))
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
 	void move_pionek()
 	{
 		int x,y;
 		bool movable=false;
 		while(movable!=true)
 		{
-			cout<<"On postion X: ";
-			cin>>x;
-			cout<<"On position Y: ";
-			cin>>y;
+			x,y=-1; // set value to launch while 
 			while((x<0||x>8)||(y<0||y>8)) //prevent from escape player chess board
 			{
 				cout<<"On postion X: ";
 				cin>>x;
 				cout<<"On position Y: ";
 				cin>>y;
+				/* Zrobic osoban funkcje wyłowić z tej klasy sprawdzajaca czy mozna sie ruszyc 
+				if(((tab[y_-1][x_]!="##" || tab[y_-1][x_+1]=="##" || tab[y_-1][x_-1]=="##") && move_%2==0 )
+				||((tab[y_+1][x_]!="##" || tab[y_+1][x_+1]=="##" || tab[y_+1][x_-1]=="##") && move_%2==1 ))
+				{
+					cout<<"You can't move anywhere this figure, choose another one or move other figure to be able to!"<<endl;
+				}
+				*/
+				//checking if figure can move anywhere (if it's not blocked)
+				
 			}
 			if((y-y_==1 && move_%2==1)||(y-y_==-1 && move_%2==0) ) //Pionek player 1 and 2 movement 
 			{
@@ -46,17 +99,14 @@ public:
 						else{
 							movable=true;
 						}
-
 					}
 					else{
 						cout<<"Inappropriate move! Try again! "<<endl;
 					}
 				}
-				else{
-					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" 
-					|| tab[y][x]=="B1" || tab[y][x]=="K1" ||  tab[y][x]=="R1"
-					|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" 
-					|| tab[y][x]=="B2" || tab[y][x]=="K2" ||  tab[y][x]=="R2")
+				else
+				{
+					if(tab[y][x]!="##")
 					{
 						movable=false;
 						cout<<"You can't beat this figure! :"<<tab[y][x]<<endl;
@@ -70,15 +120,13 @@ public:
 			{
 				if(abs(x-x_)>0)
 				{
-					cout<<"No";
+					cout<<"Inappropriate move! try again!"<<endl;
 				}
 				else{
-					if(tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" 
-					|| tab[y][x]=="B1" || tab[y][x]=="K1" ||  tab[y][x]=="R1"
-					|| tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" 
-					|| tab[y][x]=="B2" || tab[y][x]=="K2" ||  tab[y][x]=="R2")
+					if(tab[y][x]!="##")
 					{
 						movable=false;
+						cout<<"You can't beat this figure! :"<<tab[y][x]<<endl;
 					}
 					else{
 						movable=true;
@@ -87,9 +135,7 @@ public:
 			}
 			else{
 				cout<<"Inappropriate move try again!"<<endl;
-			}
-			
-			
+			}		
 		}
 		tab[y][x]=tab[y_][x_];
 		tab[y_][x_]="##";
@@ -586,62 +632,83 @@ int main()
 	int i=2;
     board_setup();
 	view_board();
-	int x=-1,y=-1;
+	int x,y,counter;
+	bool ifmove;
 	while(i<=100)
 	{	
-		int counter=0; //while working until someone choose their own figures 
-		while(tab[y][x]!=("P"+to_string(i%2+1)) && tab[y][x]!=("N"+to_string(i%2+1)) && tab[y][x]!=("Q"+to_string(i%2+1))
-		&& tab[y][x]!=("B"+to_string(i%2+1)) && tab[y][x]!=("K"+to_string(i%2+1))  && tab[y][x]!=("R"+to_string(i%2+1)))
-		{
-			if(counter>0) //skip when it's first move player 
+		bool ifmove =false;
+		counter=0; //while working until someone choose their own figures 
+			do
 			{
-				cout<<"Inappropriate move! Choose your figures! Unable move from: "<<tab[y][x]<<" for Player "<<i%2+1<<". Try again!"<<endl;
-			}
-			cout<<"Player "<<i%2+1<<" move :"<<endl;
-			cout<<"From position X: ";
-			cin>>x;
-			cout<<"From Position Y: ";
-			cin>>y;
-			counter++;
-		}
-		cout<<"Where do you want to move: "<<tab[y][x]<<endl;
-		//creating class appropriate to chosen figure 	
-		if(tab[y][x]=="P1" || tab[y][x]=="P2") 
-		{
-			Pionek P(x,y,i);
-			P.move_pionek();
-			view_board();
-		}
-		else if(tab[y][x]=="R1" || tab[y][x]=="R2")
-		{
-			Tower T(x,y,i);
-			T.move_tower();
-			view_board();
-		}
-		else if(tab[y][x]=="B1" || tab[y][x]=="B2")
-		{
-			Goniec G(x,y,i);
-			G.move_tower();
-			view_board();
-		}
-		else if(tab[y][x]=="Q1" || tab[y][x]=="Q2")
-		{
-			Queen Q(x,y,i);
-			Q.move_queen();
-			view_board();
-		}
-		else if(tab[y][x]=="K1" || tab[y][x]=="K2")
-		{
-			King K(x,y,i);
-			K.move_king();
-			view_board();
-		}
-		else if(tab[y][x]=="N1" || tab[y][x]=="N2")
-		{
-			Horse H(x,y,i);
-			H.move_horse();
-			view_board();
-		}
+				x=-1,y=-1;
+				if(tab[y][x]!=("P"+to_string(i%2+1)) && tab[y][x]!=("N"+to_string(i%2+1)) && tab[y][x]!=("Q"+to_string(i%2+1))
+				&& tab[y][x]!=("B"+to_string(i%2+1)) && tab[y][x]!=("K"+to_string(i%2+1))  && tab[y][x]!=("R"+to_string(i%2+1)))
+				{
+					if(counter>0) //skip when it's first move player 
+					{
+						cout<<"Inappropriate move! Choose your figures! Unable move from: "<<tab[y][x]<<" for Player "<<i%2+1<<". Try again!"<<endl;
+					}
+					cout<<"Player "<<i%2+1<<" move :"<<endl;
+					cout<<"From position X: ";
+					cin>>x;
+					cout<<"From Position Y: ";
+					cin>>y;
+					counter++;
+
+					cout<<"Where do you want to move: "<<tab[y][x]<<endl;
+					//creating class appropriate to chosen figure 	
+					if(tab[y][x]=="P1" || tab[y][x]=="P2") 
+					{
+						Pionek P(x,y,i);
+						if(P.ifMove()==true)
+						{
+							P.move_pionek();
+							view_board();
+							ifmove=true;
+						}
+						else
+						{
+							cout<<"There is no place where you can move this figures .Your figure is blocked"<<endl;
+							ifmove=false;
+						}
+					}
+					else if(tab[y][x]=="R1" || tab[y][x]=="R2")
+					{
+						Tower T(x,y,i);
+						T.move_tower();
+						view_board();
+						ifmove=true;
+					}
+					else if(tab[y][x]=="B1" || tab[y][x]=="B2")
+					{
+						Goniec G(x,y,i);
+						G.move_tower();
+						view_board();
+						ifmove=true;
+					}
+					else if(tab[y][x]=="Q1" || tab[y][x]=="Q2")
+					{
+						Queen Q(x,y,i);
+						Q.move_queen();
+						view_board();
+						ifmove=true;
+					}
+					else if(tab[y][x]=="K1" || tab[y][x]=="K2")
+					{
+						King K(x,y,i);
+						K.move_king();
+						view_board();
+						ifmove=true;
+					}
+					else if(tab[y][x]=="N1" || tab[y][x]=="N2")
+					{
+						Horse H(x,y,i);
+						H.move_horse();
+						view_board();
+						ifmove=true;
+					}
+				}
+			}while(ifmove!=true);
 		i++;
 	}
 
