@@ -146,6 +146,66 @@ class Tower{
 			y_=y;
 			counter_=counter;
 		}
+		bool ifMove()
+		{
+			if((ifBeatOwnFigure(x_,y_+1) && y_<7) || (ifBeatOwnFigure(x_,y_-1) && y_>0 )|| 
+			(ifBeatOwnFigure(x_+1,y_) && x_<7 )|| (ifBeatOwnFigure(x_,y_-1) && x_>0))
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		bool ifBeatOwnFigure(int x_g,int y_g)
+		{
+			int x,y;
+			bool ifcan = false;
+			x=x_g;
+			y=y_g;
+			if((x-x_==0 && y-y_!=0)) 
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+					int c = counter_;
+					for(int i=start ; i<=end;i++)
+					{
+						if(tab[i][x]==("P"+to_string(c%2+1)) || tab[i][x]==("N"+to_string(c%2+1)) || tab[i][x]==("Q"+to_string(c%2+1))
+						|| tab[i][x]==("B"+to_string(c%2+1)) || tab[i][x]==("K"+to_string(c%2+1))  || (tab[i][x]==("R"+to_string(c%2+1))&& y_!=i))
+						{
+							ifcan = false;
+							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
+							break;
+						}
+						else{
+							ifcan= true;
+						}
+					}
+				}
+			else if(x-x_!=0 && y-y_==0)
+				{
+					int start = min(x,x_);
+					int end =  max(x_,x);
+					int c = counter_;
+					for(int i= start;i<=end;i++)
+					{
+						if(tab[y][i]==("P"+to_string(c%2+1)) || tab[y][i]==("N"+to_string(c%2+1)) || tab[y][i]==("Q"+to_string(c%2+1))
+						|| tab[y][i]==("B"+to_string(c%2+1)) || tab[y][i]==("K"+to_string(c%2+1))  || (tab[y][i]==("R"+to_string(c%2+1))&& x_!=i))
+						{
+							ifcan= false;
+							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
+							break;
+						}
+						else{
+							ifcan= true;
+						}
+					}
+				}
+				else{
+					cout<<"Inappropriate move try again!"<<endl;
+				}
+				return ifcan;
+		}
 		void move_tower()
 		{
 			int x,y;
@@ -159,67 +219,12 @@ class Tower{
 					cout<<"On position Y: ";
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
-
-				if(x-x_==0 && y-y_!=0) 
-				{
-					int start = min(y,y_);
-					int end =  max(y_,y);
-
-					for(int i=start ; i<=end;i++)
-					{
-						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="Q1" 
-						|| tab[i][x]=="B1" || tab[i][x]=="K1" || tab[y][x]=="R1") &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
-						}
-						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="Q2" 
-						|| tab[i][x]=="B2" || tab[i][x]=="K2" || tab[y][x]=="R2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure! : "<<tab[i][x]<<endl;
-							break;
-						}
-						else{
-							movable=true;
-						}
-					}
 				
-				}
-				else if(x-x_!=0 && y-y_==0)
-				{
-					int start = min(x,x_);
-					int end =  max(x_,x);
-					for(int i= start;i<=end;i++)
-					{
-						if((tab[y][i]=="P1" || tab[y][i]=="N1" || tab[y][i]=="Q1"
-						 || tab[y][i]=="B1" || tab[y][i]=="K1") &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
-							break;
-						}
-						else if((tab[y][i]=="P2" || tab[y][i]=="N2" || tab[y][i]=="Q2"
-						 || tab[y][i]=="B2" || tab[y][i]=="K2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
-							break;
-						}
-						else{
-							movable=true;
-						}
-					}
-				}
-				else{
-					cout<<"No";
-				}
+				movable=ifBeatOwnFigure(x,y);
 			}	
 			tab[y][x]=tab[y_][x_];
 			tab[y_][x_]="##";
 		}
-
 };
 
 class Goniec{
@@ -650,9 +655,16 @@ int main()
 					else if(tab[y][x]=="R1" || tab[y][x]=="R2")
 					{
 						Tower T(x,y,i);
-						T.move_tower();
-						view_board();
-						ifmove=true;
+						if(T.ifMove()==true)
+						{
+							T.move_tower();
+							view_board();
+							ifmove=true;
+						}
+						else{
+							cout<<"There is no place where you can move this figures .Your figure is blocked"<<endl;
+							ifmove=false;
+						}
 					}
 					else if(tab[y][x]=="B1" || tab[y][x]=="B2")
 					{
