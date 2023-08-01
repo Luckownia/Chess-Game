@@ -148,8 +148,8 @@ class Tower{
 		}
 		bool ifMove()
 		{
-			if((ifBeatOwnFigure(x_,y_+1) && y_<7) || (ifBeatOwnFigure(x_,y_-1) && y_>0 )|| 
-			(ifBeatOwnFigure(x_+1,y_) && x_<7 )|| (ifBeatOwnFigure(x_,y_-1) && x_>0))
+			if((ifBeatOwnFigures(x_,y_+1) && y_<7) || (ifBeatOwnFigures(x_,y_-1) && y_>0 )|| 
+			(ifBeatOwnFigures(x_+1,y_) && x_<7 )|| (ifBeatOwnFigures(x_,y_-1) && x_>0))
 			{
 				return true;
 			}
@@ -157,47 +157,38 @@ class Tower{
 				return false;
 			}
 		}
-		bool ifBeatOwnFigure(int x_g,int y_g)
+		bool ifBeatOwnFigures(int x_g,int y_g)
 		{
 			int x,y;
 			bool ifcan = false;
 			x=x_g;
 			y=y_g;
-			if((x-x_==0 && y-y_!=0)) 
+			if((x-x_==0 && y-y_!=0) || (x-x_!=0 && y-y_==0)) 
 				{
-					int start = min(y,y_);
-					int end =  max(y_,y);
+					int startY = min(y,y_);
+					int endY =  max(y_,y);
+					int startX = min(x,x_);
+					int endX =  max(x_,x);
 					int c = counter_;
-					for(int i=start ; i<=end;i++)
+					while((startY<=endY) &&(startX<=endX))
 					{
-						if(tab[i][x]==("P"+to_string(c%2+1)) || tab[i][x]==("N"+to_string(c%2+1)) || tab[i][x]==("Q"+to_string(c%2+1))
-						|| tab[i][x]==("B"+to_string(c%2+1)) || tab[i][x]==("K"+to_string(c%2+1))  || (tab[i][x]==("R"+to_string(c%2+1))&& y_!=i))
+						if(tab[startY][startX]==("P"+to_string(c%2+1)) || tab[startY][startX]==("N"+to_string(c%2+1)) || tab[startY][startX]==("Q"+to_string(c%2+1))
+						|| tab[startY][startX]==("B"+to_string(c%2+1)) || tab[startY][startX]==("K"+to_string(c%2+1)) ||  ((tab[startY][startX]==("R"+to_string(c%2+1)) && ((startY!=y_&&startX==x_)||(startY==y_&&startX!=x_)))))
 						{
 							ifcan = false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
+							cout<<"You can't beat your own figure: "<<tab[startY][startX]<<endl;
 							break;
 						}
 						else{
 							ifcan= true;
 						}
-					}
-				}
-			else if(x-x_!=0 && y-y_==0)
-				{
-					int start = min(x,x_);
-					int end =  max(x_,x);
-					int c = counter_;
-					for(int i= start;i<=end;i++)
-					{
-						if(tab[y][i]==("P"+to_string(c%2+1)) || tab[y][i]==("N"+to_string(c%2+1)) || tab[y][i]==("Q"+to_string(c%2+1))
-						|| tab[y][i]==("B"+to_string(c%2+1)) || tab[y][i]==("K"+to_string(c%2+1))  || (tab[y][i]==("R"+to_string(c%2+1))&& x_!=i))
+						if(abs(x-x_)==0) //if movement upright then we will check through Y
 						{
-							ifcan= false;
-							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
-							break;
+							startY++;
 						}
-						else{
-							ifcan= true;
+						else if(abs(y-y_)==0)//if movement horizontally then we will check through X
+						{
+							startX++;
 						}
 					}
 				}
@@ -220,7 +211,7 @@ class Tower{
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
 				
-				movable=ifBeatOwnFigure(x,y);
+				movable=ifBeatOwnFigures(x,y);
 			}	
 			tab[y][x]=tab[y_][x_];
 			tab[y_][x_]="##";
