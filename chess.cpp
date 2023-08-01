@@ -227,7 +227,59 @@ class Goniec{
 			y_=y;
 			counter_=move;
 		}
-		void move_tower()
+		bool ifMove()
+		{
+			if((ifBeatOwnFigures(x_+1,y_+1)&&(x_<7 && y_<7))||(ifBeatOwnFigures(x_+1,y_-1)&&(x_<7 && y_>0)) 
+			|| (ifBeatOwnFigures(x_-1,y_+1)&&(x_>0 && y_<7)) || (ifBeatOwnFigures(x_-1,y_-1)&&(x_>0 && y_>0)))
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		bool ifBeatOwnFigures(int x_g,int y_g) //something wrong with second bishop 
+		{
+			bool ifcan =false;
+			int x,y;
+			x=x_g;
+			y=y_g;
+			if(abs(x_-x)==abs(y_-y))
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					int rowDiff = abs(x - x_);
+					int colDiff = abs(y_-y);
+					int rowD = (x > x_) ? 1 : -1; // Upright movement 
+					int colD = (y > y_) ? 1 : -1; // Horizontaly movement 
+					for(int i=1; i<=rowDiff;i++)
+					{
+						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
+						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==0)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
+							break;
+						}
+						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
+						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==1)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
+							break;
+						}
+						else{
+							ifcan=true;
+						}
+					}
+				}
+				else{
+					cout<<"Inappropriate move try again! "<<endl;
+				}
+				return ifcan;
+		}
+		void move_bishop()
 		{
 			int x,y;
 			bool movable=false;
@@ -240,8 +292,9 @@ class Goniec{
 					cout<<"On position Y: ";
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
-
-				if(abs(x_-x)==abs(y_-y))
+				
+				movable = ifBeatOwnFigures(x,y);
+				/*if(abs(x_-x)==abs(y_-y))
 				{
 					int start = min(y,y_);
 					int end =  max(y_,y);
@@ -273,7 +326,7 @@ class Goniec{
 				}
 				else{
 					cout<<"Inappropriate move try again! "<<endl;
-				}
+				}*/
 			}
 			tab[y][x]=tab[y_][x_];
 			tab[y_][x_]="##";
@@ -660,9 +713,17 @@ int main()
 					else if(tab[y][x]=="B1" || tab[y][x]=="B2")
 					{
 						Goniec G(x,y,i);
-						G.move_tower();
-						view_board();
-						ifmove=true;
+						if(G.ifMove()==true)
+						{	
+							G.move_bishop();
+							view_board();
+							ifmove=true;
+						}
+						else{
+							cout<<"There is no place where you can move this figures .Your figure is blocked"<<endl;
+							ifmove=false;
+						}
+
 					}
 					else if(tab[y][x]=="Q1" || tab[y][x]=="Q2")
 					{
