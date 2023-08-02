@@ -157,7 +157,7 @@ class Tower{
 				return false;
 			}
 		}
-		bool ifBeatOwnFigures(int x_g,int y_g)
+		bool ifBeatOwnFigures(int x_g,int y_g) //zmienic na styl bishopa
 		{
 			int x,y;
 			bool ifcan = false;
@@ -218,15 +218,9 @@ class Tower{
 		}
 };
 
-class Goniec{
+class Goniec : public Tower{
 	public:
-		int x_,y_,counter_;
-		Goniec(int x,int y,int move)
-		{
-			x_=x;
-			y_=y;
-			counter_=move;
-		}
+		using Tower::Tower;
 		bool ifMove()
 		{
 			if((ifBeatOwnFigures(x_+1,y_+1)&&(x_<7 && y_<7))||(ifBeatOwnFigures(x_+1,y_-1)&&(x_<7 && y_>0)) 
@@ -332,14 +326,22 @@ class Goniec{
 			tab[y_][x_]="##";
 		}
 };
-class Queen{
+class Queen:public Goniec{
 	public:
-		int x_,y_,counter_;
-		Queen(int x,int y,int move)
+		using Goniec::Goniec;
+		bool ifMove()
 		{
-			x_=x;
-			y_=y;
-			counter_=move;
+			if(Tower::ifMove()) // Nie działa trzeba naprawić 
+			{
+				return true;
+			}
+			else if(Goniec::ifMove())
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 		void move_queen()
 		{
@@ -354,6 +356,15 @@ class Queen{
 					cout<<"On position Y: ";
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
+				if(x-x_==0 && y-y_!=0 || (x-x_!=0 && y-y_==0) ){
+					movable = Tower::ifBeatOwnFigures(x,y); // For tower's movement 
+				}
+				else if(abs(x_-x)==abs(y_-y)) // For bishop's movement 
+				{
+					movable = Goniec::ifBeatOwnFigures(x,y);
+				}
+				
+				/*
 				if(x-x_==0 && y-y_!=0) //movement Queen Tower
 				{
 					int start = min(y,y_);
@@ -438,7 +449,7 @@ class Queen{
 				}
 				else{
 					cout<<"Inappropriate move try again !"<<endl;
-				}	
+				}	*/
 
 			}
 			tab[y][x]=tab[y_][x_]; //movement 
@@ -728,9 +739,17 @@ int main()
 					else if(tab[y][x]=="Q1" || tab[y][x]=="Q2")
 					{
 						Queen Q(x,y,i);
-						Q.move_queen();
-						view_board();
-						ifmove=true;
+						if(Q.ifMove()==true)
+						{
+							Q.move_queen();
+							view_board();
+							ifmove=true;
+						}
+						else{
+							cout<<"There is no place where you can move this figures .Your figure is blocked"<<endl;
+							ifmove=false;
+						}
+
 					}
 					else if(tab[y][x]=="K1" || tab[y][x]=="K2")
 					{
