@@ -165,30 +165,38 @@ class Tower{
 			y=y_g;
 			if((x-x_==0 && y-y_!=0) || (x-x_!=0 && y-y_==0)) 
 				{
-					int startY = min(y,y_);
-					int endY =  max(y_,y);
-					int startX = min(x,x_);
-					int endX =  max(x_,x);
-					int c = counter_;
-					while((startY<=endY) &&(startX<=endX))
+					int size,rowD,colD;
+					if(x-x_==0) //if movement upright then we will check through Y
 					{
-						if(tab[startY][startX]==("P"+to_string(c%2+1)) || tab[startY][startX]==("N"+to_string(c%2+1)) || tab[startY][startX]==("Q"+to_string(c%2+1))
-						|| tab[startY][startX]==("B"+to_string(c%2+1)) || tab[startY][startX]==("K"+to_string(c%2+1)) ||  ((tab[startY][startX]==("R"+to_string(c%2+1)) && ((startY!=y_&&startX==x_)||(startY==y_&&startX!=x_)))))
+						colD = (y > y_) ? 1 : -1;
+						rowD=0;
+						size = abs(y-y_);
+					}
+					else if(y-y_==0)//if movement horizontally then we will check through X
+					{
+						rowD = (x > x_) ? 1 : -1;
+						colD=0;
+						size = abs(y-y_);	
+					}
+
+					for(int i=1;i<=size;i++)
+					{
+						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
+						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==0)
 						{
-							ifcan = false;
-							cout<<"You can't beat your own figure: "<<tab[startY][startX]<<endl;
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
+							break;
+						}
+						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
+						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==1)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
 							break;
 						}
 						else{
-							ifcan= true;
-						}
-						if(abs(x-x_)==0) //if movement upright then we will check through Y
-						{
-							startY++;
-						}
-						else if(abs(y-y_)==0)//if movement horizontally then we will check through X
-						{
-							startX++;
+							ifcan =true;
 						}
 					}
 				}
