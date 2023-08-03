@@ -148,8 +148,8 @@ class Tower{
 		}
 		bool ifMove()
 		{
-			if((ifBeatOwnFigures(x_,y_+1) && y_<7) || (ifBeatOwnFigures(x_,y_-1) && y_>0 )|| 
-			(ifBeatOwnFigures(x_+1,y_) && x_<7 )|| (ifBeatOwnFigures(x_,y_-1) && x_>0))
+			if((ifBeatOwnFigures(x_,y_+1) && y_<=6) || (ifBeatOwnFigures(x_,y_-1) && y_>=1 )|| 
+			(ifBeatOwnFigures(x_+1,y_) && x_<=6 )|| (ifBeatOwnFigures(x_-1,y_) && x_>=1))
 			{
 				return true;
 			}
@@ -168,13 +168,25 @@ class Tower{
 					int size,rowD,colD;
 					if(x-x_==0) //if movement upright then we will check through Y
 					{
-						colD = (y > y_) ? 1 : -1;
+						if(y_<7)
+						{
+							colD = (y > y_) ? 1 : -1;
+						}
+						else{
+							colD=0;
+						}
 						rowD=0;
 						size = abs(y-y_);
 					}
 					else if(y-y_==0)//if movement horizontally then we will check through X
 					{
-						rowD = (x > x_) ? 1 : -1;
+						if(x_<7)
+						{
+							rowD = (x > x_) ? 1 : -1;
+						}
+						else{
+							rowD=0;
+						}
 						colD=0;
 						size = abs(y-y_);	
 					}
@@ -196,14 +208,14 @@ class Tower{
 							break;
 						}
 						else{
-							ifcan =true;
+							ifcan =true;	
 						}
 					}
 				}
 				else{
 					cout<<"Inappropriate move try again!"<<endl;
 				}
-				return ifcan;
+				return ifcan;	
 		}
 		void move_tower()
 		{
@@ -253,8 +265,19 @@ class Goniec : public Tower{
 
 					int rowDiff = abs(x - x_);
 					int colDiff = abs(y_-y);
-					int rowD = (x > x_) ? 1 : -1; // Upright movement 
-					int colD = (y > y_) ? 1 : -1; // Horizontaly movement 
+					int rowD,colD;
+					if(x_<7){
+						rowD = (x > x_) ? 1 : -1; // Upright movement 
+					}
+					else{
+						rowD=0;
+					}
+					if(y_<7){
+						colD = (y > y_) ? 1 : -1; // Upright movement 
+					}
+					else{
+						colD=0;
+					}
 					for(int i=1; i<=rowDiff;i++)
 					{
 						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
