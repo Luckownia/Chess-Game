@@ -194,14 +194,14 @@ class Tower{
 					for(int i=1;i<=size;i++)
 					{
 						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==0)
+						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || (tab[y_+i*colD][x_+i*rowD]=="R1" && (colD!=0 && rowD!=0))) &&  counter_%2==0)
 						{
 							ifcan=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
 							break;
 						}
 						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==1)
+						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || (tab[y_+i*colD][x_+i*rowD]=="R2" && (colD!=0 && rowD!=0))) &&  counter_%2==1)
 						{
 							ifcan=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
@@ -584,6 +584,43 @@ public:
 			y_=y;
 			counter_=move;
 		}
+		bool ifBeatOwnFigure(int x_g,int y_g)
+		{
+			int x,y;
+			bool ifcan = false;
+			x=x_g;
+			y=y_g;
+			if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" 
+			|| tab[y][x]=="B1" || tab[y][x]=="K1"  || tab[y][x]=="R1") &&  counter_%2==0)
+				{
+					ifcan=false;
+					cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
+				}
+			else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" 
+			|| tab[y][x]=="B2" || tab[y][x]=="K2" || tab[y][x]=="R2") &&  counter_%2==1)
+				{
+					ifcan=false;
+					cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
+				}
+			else{
+					ifcan=true;
+			}
+
+			return ifcan;
+		}
+		bool ifMove()
+		{
+			if((ifBeatOwnFigure(x_-1,y_-2)&&(x_>0 & y_>1))|| (ifBeatOwnFigure(x_-1,y_+2)&&(x_>0 & y_<6)) || 
+			(ifBeatOwnFigure(x_+1,y_-2)&&(x_<7 & y_>1)) || (ifBeatOwnFigure(x_+1,y_+2)&&(x_<7 & y_<6)) || 
+			(ifBeatOwnFigure(x_-2,y_+1)&&(x_>1 & y_<7)) || (ifBeatOwnFigure(x_-2,y_-1)&&(x_>1 & y_>0)) ||
+			(ifBeatOwnFigure(x_+2,y_+1)&&(x_>1 & y_<7)) || (ifBeatOwnFigure(x_+2,y_-1)&&(x_>1 & y_>0)))
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 		void move_horse()
 		{
 			int x,y;
@@ -597,7 +634,7 @@ public:
 					cout<<"On position Y: ";
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
-				
+		
 				if(((x==x_-1 || x==x_+1) && (x>=0 & x<8))&&((y==y_+2 || y==y_-2) && (y<8 && y>=0))
         		||((x==x_-2 || x==x_+2) && (x>=0 & x<8))&&((y==y_+1 || y==y_-1) && (y<8 && y>=0))) 
 				{
@@ -792,9 +829,17 @@ int main()
 					else if(tab[y][x]=="N1" || tab[y][x]=="N2")
 					{
 						Horse H(x,y,i);
-						H.move_horse();
-						view_board();
-						ifmove=true;
+						if(H.ifMove()==true)
+						{
+							H.move_horse();
+							view_board();
+							ifmove=true;
+						}
+						else{
+							cout<<"There is no place where you can move this figures .Your figure is blocked"<<endl;
+							ifmove=false;
+						}
+
 					}
 			}
 		i++;
