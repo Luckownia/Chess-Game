@@ -157,7 +157,7 @@ class Tower{
 				return false;
 			}
 		}
-		bool ifBeatOwnFigures(int x_g,int y_g) //zmienic na styl bishopa
+		bool ifBeatOwnFigures(int x_g,int y_g)  //zmiana na bishopa
 		{
 			int x,y;
 			bool ifcan = false;
@@ -188,7 +188,6 @@ class Tower{
 							ifcan=true;
 						}
 					}
-				
 				}
 				else if(x-x_!=0 && y-y_==0)
 				{
@@ -215,55 +214,6 @@ class Tower{
 						}
 					}
 				}
-			/*if((x-x_==0 && y-y_!=0) || (x-x_!=0 && y-y_==0)) 
-				{
-					int size,rowD,colD;
-					if(x-x_==0) //if movement upright then we will check through Y
-					{
-						if(y_<7)
-						{
-							colD = (y > y_) ? 1 : -1;
-						}
-						else{
-							colD=0;
-						}
-						rowD=0;
-						size = abs(y-y_);
-					}
-					else if(y-y_==0)//if movement horizontally then we will check through X
-					{
-						if(x_<7)
-						{
-							rowD = (x > x_) ? 1 : -1;
-						}
-						else{
-							rowD=0;
-						}
-						colD=0;
-						size = abs(y-y_);	
-					}
-
-					for(int i=1;i<=size;i++)
-					{
-						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || ((colD!=0&&rowD!=0)&&tab[y_+i*colD][x_+i*rowD]=="R1")) &&  counter_%2==0)
-						{
-							ifcan=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || ((colD!=0&&rowD!=0)&&tab[y_+i*colD][x_+i*rowD]=="R2")) &&  counter_%2==1)
-						{
-							ifcan=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else{
-							ifcan =true;	
-						}
-					}
-				}*/
 				else{
 					cout<<"Inappropriate move try again!"<<endl;
 				}
@@ -304,7 +254,7 @@ class Goniec : public Tower{
 				return false;
 			}
 		}
-		bool ifBeatOwnFigures(int x_g,int y_g) //something wrong with second bishop 
+		bool ifBeatOwnFigures(int x_g,int y_g) 
 		{
 			bool ifcan =false;
 			int x,y;
@@ -313,6 +263,34 @@ class Goniec : public Tower{
 			if(abs(x_-x)==abs(y_-y))
 				{
 					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					int rowDiff = abs(x - x_);
+					int colDiff = abs(y_-y);
+					int rowD = (x > x_) ? 1 : -1; // Upright movement 
+					int colD = (y > y_) ? 1 : -1; // Horizontaly movement 
+					for(int i=1; i<=rowDiff;i++)
+					{
+						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
+						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==0)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
+							break;
+						}
+						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
+						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==1)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
+							break;
+						}
+						else{
+							ifcan=true;
+						}
+					}
+				}
+				/*	int start = min(y,y_);
 					int end =  max(y_,y);
 
 					int rowDiff = abs(x - x_);
@@ -350,7 +328,7 @@ class Goniec : public Tower{
 							ifcan=true;
 						}
 					}
-				}
+				}*/
 				else{
 					cout<<"Inappropriate move try again! "<<endl;
 				}
