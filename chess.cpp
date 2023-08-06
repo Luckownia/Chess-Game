@@ -148,8 +148,8 @@ class Tower{
 		}
 		bool ifMove()
 		{
-			if((ifBeatOwnFigures(x_,y_+1) && y_<=6) || (ifBeatOwnFigures(x_,y_-1) && y_>=1 )|| 
-			(ifBeatOwnFigures(x_+1,y_) && x_<=6 )|| (ifBeatOwnFigures(x_-1,y_) && x_>=1))
+			if((y_<7 && ifBeatOwnFigures(x_,y_+1) ) || ( y_>0 && ifBeatOwnFigures(x_,y_-1))|| 
+			(x_<7 && ifBeatOwnFigures(x_+1,y_))|| (x_>0 && ifBeatOwnFigures(x_-1,y_)))
 			{
 				return true;
 			}
@@ -163,7 +163,59 @@ class Tower{
 			bool ifcan = false;
 			x=x_g;
 			y=y_g;
-			if((x-x_==0 && y-y_!=0) || (x-x_!=0 && y-y_==0)) 
+			if(x-x_==0 && y-y_!=0) 
+				{
+					int start = min(y,y_);
+					int end =  max(y_,y);
+
+					for(int i=start; i<=end;i++)
+					{
+						if((tab[i][x]=="P1" || tab[i][x]=="N1" || (tab[i][x]=="R1" && i!=y_)
+						|| tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==0)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
+							break;
+						}
+						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="B2" 
+						|| (tab[i][x]=="R2" && i!=y_)|| tab[i][x]=="K2") &&  counter_%2==1)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
+							break;
+						}
+						else{
+							ifcan=true;
+						}
+					}
+				
+				}
+				else if(x-x_!=0 && y-y_==0)
+				{
+					int start = min(x,x_);
+					int end =  max(x_,x);
+					for(int i= start;i<=end;i++)
+					{
+						if((tab[y][i]=="P1" || tab[y][i]=="N1"  || tab[y][i]=="B1" 
+						|| tab[y][i]=="K1" || (tab[y][i]=="R1" && i!=x_)  ) &&  counter_%2==0)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
+							break;
+						}
+						else if((tab[y][i]=="P2" || tab[y][i]=="N2"  || tab[y][i]=="B2" 
+						|| tab[y][i]=="K2" || (tab[y][i]=="R2" && i!=x_)) &&  counter_%2==1)
+						{
+							ifcan=false;
+							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
+							break;
+						}
+						else{
+							ifcan=true;
+						}
+					}
+				}
+			/*if((x-x_==0 && y-y_!=0) || (x-x_!=0 && y-y_==0)) 
 				{
 					int size,rowD,colD;
 					if(x-x_==0) //if movement upright then we will check through Y
@@ -194,14 +246,14 @@ class Tower{
 					for(int i=1;i<=size;i++)
 					{
 						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || (tab[y_+i*colD][x_+i*rowD]=="R1" && (colD!=0 && rowD!=0))) &&  counter_%2==0)
+						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || ((colD!=0&&rowD!=0)&&tab[y_+i*colD][x_+i*rowD]=="R1")) &&  counter_%2==0)
 						{
 							ifcan=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
 							break;
 						}
 						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || (tab[y_+i*colD][x_+i*rowD]=="R2" && (colD!=0 && rowD!=0))) &&  counter_%2==1)
+						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || ((colD!=0&&rowD!=0)&&tab[y_+i*colD][x_+i*rowD]=="R2")) &&  counter_%2==1)
 						{
 							ifcan=false;
 							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
@@ -211,7 +263,7 @@ class Tower{
 							ifcan =true;	
 						}
 					}
-				}
+				}*/
 				else{
 					cout<<"Inappropriate move try again!"<<endl;
 				}
