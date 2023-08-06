@@ -501,29 +501,36 @@ class King{
 			int y,x;
 			y=y_g;
 			x=x_g;
-
-				if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" 
-				|| tab[y][x]=="B1" || tab[y][x]=="R1") &&  counter_%2==0)
-					{
-						cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
-						return false;	
-					}
-					else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" 
-					|| tab[y][x]=="B2" || tab[y][x]=="R2") &&  counter_%2==1)
-					{
-						cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
-						return false;
-					}
-					else{
-						return true;
-					}
+			
+			if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" 
+			|| tab[y][x]=="B1" || tab[y][x]=="R1") &&  counter_%2==0)
+				{
+					cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
+					return false;	
+				}
+				else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" 
+				|| tab[y][x]=="B2" || tab[y][x]=="R2") &&  counter_%2==1)
+				{
+					cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
+					return false;
+				}
+				else{
+					return true;
+				}
 		}
 		bool ifMove()
 		{
 			bool ifcan =false;
-			if((ifBeatOwnFigure(x_,y_-1) && y_>0) || (ifBeatOwnFigure(x_,y_+1) && y_<7) || (ifBeatOwnFigure(x_-1,y_) && x_>0)
-			|| (ifBeatOwnFigure(x_+1,y_+1) && (x_<7 && y_<7)) || (ifBeatOwnFigure(x_-1,y_+1) && (x_>0 && y_<7)) || (ifBeatOwnFigure(x_+1,y_-1) && (x_<7 && y_>0))
-			|| (ifBeatOwnFigure(x_-1,y_-1) && (x_>0 && y_>0)))
+			if (
+				(y_ > 0 && ifBeatOwnFigure(x_, y_-1) ) ||
+				(y_ < 7 && ifBeatOwnFigure(x_, y_+1)) ||
+				(x_ > 0 && ifBeatOwnFigure(x_-1, y_)) ||
+				(x_ < 7 && ifBeatOwnFigure(x_+1, y_) ) ||
+				((x_ < 7 && y_ < 7) && ifBeatOwnFigure(x_+1, y_+1)) ||
+				((x_ > 0 && y_ < 7)&&ifBeatOwnFigure(x_-1, y_+1)) ||
+				((x_ < 7 && y_ > 0)&&ifBeatOwnFigure(x_+1, y_-1)) ||
+				((x_ > 0 && y_ > 0)&&ifBeatOwnFigure(x_-1, y_-1) )
+   			 )
 			{
 				ifcan=true;
 			}
@@ -626,21 +633,7 @@ public:
 				if(((x==x_-1 || x==x_+1) && (x>=0 & x<8))&&((y==y_+2 || y==y_-2) && (y<8 && y>=0))
         		||((x==x_-2 || x==x_+2) && (x>=0 & x<8))&&((y==y_+1 || y==y_-1) && (y<8 && y>=0))) 
 				{
-					if((tab[y][x]=="P1" || tab[y][x]=="N1" || tab[y][x]=="Q1" 
-					|| tab[y][x]=="B1" || tab[y][x]=="K1"  || tab[y][x]=="R1") &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
-						}
-					else if((tab[y][x]=="P2" || tab[y][x]=="N2" || tab[y][x]=="Q2" 
-					|| tab[y][x]=="B2" || tab[y][x]=="K2" || tab[y][x]=="R2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
-						}
-					else{
-							movable=true;
-					}
+					movable=ifBeatOwnFigure(x,y);
 				}
 				else{
 					cout<<"Inappropriate move try again !";
@@ -834,7 +827,6 @@ int main()
 							cout<<"There is no place where you can move this figures .Your figure is blocked"<<endl;
 							ifmove=false;
 						}
-
 					}
 			}
 		i++;
