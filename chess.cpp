@@ -605,10 +605,10 @@ public:
 		}
 		bool ifMove()
 		{
-			if((ifBeatOwnFigure(x_-1,y_-2)&&(x_>0 & y_>1))|| (ifBeatOwnFigure(x_-1,y_+2)&&(x_>0 & y_<6)) || 
-			(ifBeatOwnFigure(x_+1,y_-2)&&(x_<7 & y_>1)) || (ifBeatOwnFigure(x_+1,y_+2)&&(x_<7 & y_<6)) || 
-			(ifBeatOwnFigure(x_-2,y_+1)&&(x_>1 & y_<7)) || (ifBeatOwnFigure(x_-2,y_-1)&&(x_>1 & y_>0)) ||
-			(ifBeatOwnFigure(x_+2,y_+1)&&(x_>1 & y_<7)) || (ifBeatOwnFigure(x_+2,y_-1)&&(x_>1 & y_>0)))
+			if((x_>0 & y_>1)&&(ifBeatOwnFigure(x_-1,y_-2))|| ((x_>0 & y_<6) && ifBeatOwnFigure(x_-1,y_+2)) || 
+			((x_<7 & y_>1)&&ifBeatOwnFigure(x_+1,y_-2)) || ((x_<7 & y_<6)&&ifBeatOwnFigure(x_+1,y_+2)) || 
+			((x_>1 & y_<7)&&ifBeatOwnFigure(x_-2,y_+1)) || ((x_>1 & y_>0)&&ifBeatOwnFigure(x_-2,y_-1)) ||
+			((x_>1 & y_<7)&&ifBeatOwnFigure(x_+2,y_+1)) || ((x_>1 & y_>0)&&ifBeatOwnFigure(x_+2,y_-1)))
 			{
 				return true;
 			}
