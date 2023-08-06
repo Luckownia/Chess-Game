@@ -243,8 +243,8 @@ class Goniec : public Tower{
 		using Tower::Tower;
 		bool ifMove()
 		{
-			if((ifBeatOwnFigures(x_+1,y_+1)&&(x_<7 && y_<7))||(ifBeatOwnFigures(x_+1,y_-1)&&(x_<7 && y_>0)) 
-			|| (ifBeatOwnFigures(x_-1,y_+1)&&(x_>0 && y_<7)) || (ifBeatOwnFigures(x_-1,y_-1)&&(x_>0 && y_>0)))
+			if(((x_<7 && y_<7)&&ifBeatOwnFigures(x_+1,y_+1))||((x_<7 && y_>0)&&ifBeatOwnFigures(x_+1,y_-1)) 
+			|| ((x_>0 && y_<7)&&ifBeatOwnFigures(x_-1,y_+1)) || ((x_>0 && y_>0)&&ifBeatOwnFigures(x_-1,y_-1)))
 			{
 				return true;
 			}
