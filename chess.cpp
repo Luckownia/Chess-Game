@@ -3,17 +3,17 @@
 using namespace std;
 
 string tab[8][8];
-class Pionek{
+class Pawn{
 public:
 	int x_,y_,move_;
-	Pionek(int x,int y,int move)
+	Pawn(int x,int y,int move)
 	{
 		x_=x;
 		y_=y;
 		move_=move;
 	}
 
-	bool check_route(int x,int y)
+	bool ifBeatOwnFigure(int x,int y)
 	{
 		int i=move_;
 		if(tab[y][x]!=("P"+to_string(i%2+1)) && tab[y][x]!=("N"+to_string(i%2+1)) && tab[y][x]!=("Q"+to_string(i%2+1))
@@ -34,7 +34,7 @@ public:
 		//player 1 diagonially 
 		else if(move_%2==0 && ((tab[y_-1][x_-1]!="##" && (x_>0 && y_>0 )) || (tab[x_+1][y_-1]!="##" &&(x_<7 && y_>0))))
 		{
-			if(check_route(x_-1,y_-1) || check_route(x_+1,y_-1))
+			if(ifBeatOwnFigure(x_-1,y_-1) || ifBeatOwnFigure(x_+1,y_-1))
 			{
 				return true;
 			}
@@ -47,7 +47,7 @@ public:
 		}	
 		else if(move_%2==1 &&((tab[y_+1][x_+1]!="##" && (x_<7 && y_<7 )) ||(tab[y_+1][x_-1]!="##" &&(x_>0 && y_<7))))
 		{
-			if(check_route(x_+1,y_+1) || check_route(x_-1,y_+1))
+			if(ifBeatOwnFigure(x_+1,y_+1) || ifBeatOwnFigure(x_-1,y_+1))
 			{
 				return true;
 			}
@@ -59,7 +59,7 @@ public:
 			return false;
 		}
 	}
-	void move_pionek()
+	void move_pawn()
 	{
 		int x,y;
 		bool movable=false;
@@ -73,7 +73,7 @@ public:
 				cin>>y;	
 			} while((x<0||x>8)||(y<0||y>8));
 
-			if((y-y_==1 && move_%2==1)||(y-y_==-1 && move_%2==0) ) //Pionek player 1 and 2 movement 
+			if((y-y_==1 && move_%2==1)||(y-y_==-1 && move_%2==0) ) //Pawn player 1 and 2 movement 
 			{
 				if(abs(x-x_)>0)
 				{
@@ -107,7 +107,7 @@ public:
 					}
 				}
 			}
-			else if(((y-y_==2 && move_%2==1)||(y-y_==-2 && move_%2==0)) && (y_==1 || y_==6)) //first movement Pionek 
+			else if(((y-y_==2 && move_%2==1)||(y-y_==-2 && move_%2==0)) && (y_==1 || y_==6)) //first movement Pawn 
 			{
 				if(abs(x-x_)>0)
 				{
@@ -148,8 +148,8 @@ class Tower{
 		}
 		bool ifMove()
 		{
-			if((y_<7 && ifBeatOwnFigures(x_,y_+1) ) || ( y_>0 && ifBeatOwnFigures(x_,y_-1))|| 
-			(x_<7 && ifBeatOwnFigures(x_+1,y_))|| (x_>0 && ifBeatOwnFigures(x_-1,y_)))
+			if((y_<7 && ifBeatOwnFigure(x_,y_+1) ) || ( y_>0 && ifBeatOwnFigure(x_,y_-1))|| 
+			(x_<7 && ifBeatOwnFigure(x_+1,y_))|| (x_>0 && ifBeatOwnFigure(x_-1,y_)))
 			{
 				return true;
 			}
@@ -157,7 +157,7 @@ class Tower{
 				return false;
 			}
 		}
-		bool ifBeatOwnFigures(int x_g,int y_g)  //zmiana na bishopa
+		bool ifBeatOwnFigure(int x_g,int y_g)  
 		{
 			int x,y;
 			bool ifcan = false;
@@ -233,20 +233,20 @@ class Tower{
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
 				
-				movable=ifBeatOwnFigures(x,y);
+				movable=ifBeatOwnFigure(x,y);
 			}	
 			tab[y][x]=tab[y_][x_];
 			tab[y_][x_]="##";
 		}
 };
 
-class Goniec : public Tower{
+class Bishop :public Tower{
 	public:
 		using Tower::Tower;
 		bool ifMove()
 		{
-			if(((x_<7 && y_<7)&&ifBeatOwnFigures(x_+1,y_+1))||((x_<7 && y_>0)&&ifBeatOwnFigures(x_+1,y_-1)) 
-			|| ((x_>0 && y_<7)&&ifBeatOwnFigures(x_-1,y_+1)) || ((x_>0 && y_>0)&&ifBeatOwnFigures(x_-1,y_-1)))
+			if(((x_<7 && y_<7)&&ifBeatOwnFigure(x_+1,y_+1))||((x_<7 && y_>0)&&ifBeatOwnFigure(x_+1,y_-1)) 
+			|| ((x_>0 && y_<7)&&ifBeatOwnFigure(x_-1,y_+1)) || ((x_>0 && y_>0)&&ifBeatOwnFigure(x_-1,y_-1)))
 			{
 				return true;
 			}
@@ -254,7 +254,7 @@ class Goniec : public Tower{
 				return false;
 			}
 		}
-		bool ifBeatOwnFigures(int x_g,int y_g) 
+		bool ifBeatOwnFigure(int x_g,int y_g) 
 		{
 			bool ifcan =false;
 			int x,y;
@@ -290,45 +290,6 @@ class Goniec : public Tower{
 						}
 					}
 				}
-				/*	int start = min(y,y_);
-					int end =  max(y_,y);
-
-					int rowDiff = abs(x - x_);
-					int colDiff = abs(y_-y);
-					int rowD,colD;
-					if(x_<7){
-						rowD = (x > x_) ? 1 : -1; // Upright movement 
-					}
-					else{
-						rowD=0;
-					}
-					if(y_<7){
-						colD = (y > y_) ? 1 : -1; // Upright movement 
-					}
-					else{
-						colD=0;
-					}
-					for(int i=1; i<=rowDiff;i++)
-					{
-						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==0)
-						{
-							ifcan=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==1)
-						{
-							ifcan=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else{
-							ifcan=true;
-						}
-					}
-				}*/
 				else{
 					cout<<"Inappropriate move try again! "<<endl;
 				}
@@ -348,55 +309,22 @@ class Goniec : public Tower{
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
 				
-				movable = ifBeatOwnFigures(x,y);
-				/*if(abs(x_-x)==abs(y_-y))
-				{
-					int start = min(y,y_);
-					int end =  max(y_,y);
-
-					int rowDiff = abs(x - x_);
-					int colDiff = abs(y_-y);
-					int rowD = (x > x_) ? 1 : -1; // Upright movement 
-					int colD = (y > y_) ? 1 : -1; // Horizontaly movement 
-					for(int i=1; i<=rowDiff;i++)
-					{
-						if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="Q1" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1" || tab[y_+i*colD][x_+i*rowD]=="R1") &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="Q2" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2" || tab[y_+i*colD][x_+i*rowD]=="R2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else{
-							movable=true;
-						}
-					}
-				}
-				else{
-					cout<<"Inappropriate move try again! "<<endl;
-				}*/
+				movable = ifBeatOwnFigure(x,y);
 			}
 			tab[y][x]=tab[y_][x_];
 			tab[y_][x_]="##";
 		}
 };
-class Queen:public Goniec{
+class Queen:public Bishop{
 	public:
-		using Goniec::Goniec;
+		using Bishop::Bishop;
 		bool ifMove()
 		{
-			if(Tower::ifMove()) // Nie działa trzeba naprawić 
+			if(Tower::ifMove()) 
 			{
 				return true;
 			}
-			else if(Goniec::ifMove())
+			else if(Bishop::ifMove())
 			{
 				return true;
 			}
@@ -418,100 +346,12 @@ class Queen:public Goniec{
 					cin>>y;
 				} while((x<0||x>8)||(y<0||y>8));
 				if(x-x_==0 && y-y_!=0 || (x-x_!=0 && y-y_==0) ){
-					movable = Tower::ifBeatOwnFigures(x,y); // For tower's movement 
+					movable = Tower::ifBeatOwnFigure(x,y); // For tower's movement 
 				}
 				else if(abs(x_-x)==abs(y_-y)) // For bishop's movement 
 				{
-					movable = Goniec::ifBeatOwnFigures(x,y);
+					movable = Bishop::ifBeatOwnFigure(x,y);
 				}
-				
-				/*
-				if(x-x_==0 && y-y_!=0) //movement Queen Tower
-				{
-					int start = min(y,y_);
-					int end =  max(y_,y);
-
-					for(int i=start; i<=end;i++)
-					{
-						if((tab[i][x]=="P1" || tab[i][x]=="N1" || tab[i][x]=="R1" 
-						|| tab[i][x]=="B1" || tab[i][x]=="K1") &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
-						}
-						else if((tab[i][x]=="P2" || tab[i][x]=="N2" || tab[i][x]=="B2" 
-						|| tab[i][x]=="R2"|| tab[i][x]=="K2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[i][x]<<endl;
-							break;
-						}
-						else{
-							movable=true;
-						}
-					}
-				
-				}
-				else if(x-x_!=0 && y-y_==0)
-				{
-					int start = min(x,x_);
-					int end =  max(x_,x);
-					for(int i= start;i<=end;i++)
-					{
-						if((tab[y][i]=="P1" || tab[y][i]=="N1"  || tab[y][i]=="B1" 
-						|| tab[y][i]=="K1" || tab[y][i]=="R1" ) &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
-							break;
-						}
-						else if((tab[y][i]=="P2" || tab[y][i]=="N2"  || tab[y][i]=="B2" 
-						|| tab[y][i]=="K2" || tab[y][i]=="R2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y][i]<<endl;
-							break;
-						}
-						else{
-							movable=true;
-						}
-					}
-				}
-				else if(abs(x_-x)==abs(y_-y)) //movement bishop
-				{
-					int start = min(y,y_);
-					int end =  max(y_,y);
-
-					int rowDiff = abs(x - x_);
-					int colDiff = abs(y_-y);
-					int rowD = (x > x_) ? 1 : -1; // Kierunek ruchu w pionie
-					int colD = (y > y_) ? 1 : -1; // Kierunek ruchu w poziomie
-					for(int i=1; i<=rowDiff;i++)
-					{
-							if((tab[y_+i*colD][x_+i*rowD]=="P1" || tab[y_+i*colD][x_+i*rowD]=="N1" ||tab[y_+i*colD][x_+i*rowD]=="R1"
-							 || tab[y_+i*colD][x_+i*rowD]=="B1" || tab[y_+i*colD][x_+i*rowD]=="K1") &&  counter_%2==0)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else if((tab[y_+i*colD][x_+i*rowD]=="P2" || tab[y_+i*colD][x_+i*rowD]=="N2" || tab[y_+i*colD][x_+i*rowD]=="R2" 
-						|| tab[y_+i*colD][x_+i*rowD]=="B2" || tab[y_+i*colD][x_+i*rowD]=="K2") &&  counter_%2==1)
-						{
-							movable=false;
-							cout<<"You can't beat your own figure: "<<tab[y_+i*colD][x_+i*rowD]<<endl;
-							break;
-						}
-						else{
-							movable=true;
-						}
-					}
-				}
-				else{
-					cout<<"Inappropriate move try again !"<<endl;
-				}	*/
-
 			}
 			tab[y][x]=tab[y_][x_]; //movement 
 			tab[y_][x_]="##";
@@ -572,7 +412,7 @@ class King{
 			bool movable=false;
 			while(movable!=true)
 			{
-				do  //zabezpieczenie przed wyjsciem z szachownicy 
+				do  //prevent from escape player chess board 
 				{
 					cout<<"On postion X: ";
 					cin>>x;
@@ -773,10 +613,10 @@ int main()
 					//creating class appropriate to chosen figure 	
 					if(tab[y][x]=="P1" || tab[y][x]=="P2") 
 					{
-						Pionek P(x,y,i);
-						if(P.ifMove()==true)
+						Pawn P(x,y,i);
+						if(P.ifMove()==true) //checking if figure isn't blocked (if there is free space)
 						{
-							P.move_pionek();
+							P.move_pawn();
 							view_board();
 							ifmove=true;
 						}
@@ -789,7 +629,7 @@ int main()
 					else if(tab[y][x]=="R1" || tab[y][x]=="R2")
 					{
 						Tower T(x,y,i);
-						if(T.ifMove()==true)
+						if(T.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							T.move_tower();
 							view_board();
@@ -802,8 +642,8 @@ int main()
 					}
 					else if(tab[y][x]=="B1" || tab[y][x]=="B2")
 					{
-						Goniec G(x,y,i);
-						if(G.ifMove()==true)
+						Bishop G(x,y,i);
+						if(G.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{	
 							G.move_bishop();
 							view_board();
@@ -818,7 +658,7 @@ int main()
 					else if(tab[y][x]=="Q1" || tab[y][x]=="Q2")
 					{
 						Queen Q(x,y,i);
-						if(Q.ifMove()==true)
+						if(Q.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							Q.move_queen();
 							view_board();
@@ -833,7 +673,7 @@ int main()
 					else if(tab[y][x]=="K1" || tab[y][x]=="K2")
 					{
 						King K(x,y,i);
-						if(K.ifMove()==true)
+						if(K.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							K.move_king();
 							view_board();
@@ -847,7 +687,7 @@ int main()
 					else if(tab[y][x]=="N1" || tab[y][x]=="N2")
 					{
 						Horse H(x,y,i);
-						if(H.ifMove()==true)
+						if(H.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							H.move_horse();
 							view_board();
