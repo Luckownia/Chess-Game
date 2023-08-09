@@ -1,8 +1,12 @@
 #include<iostream>
+#include<vector>
 
 using namespace std;
 
 string tab[8][8];
+vector <string> beatenFigures1;
+vector <string> beatenFigures2;
+
 class Pawn{
 public:
 	int x_,y_,move_;
@@ -88,6 +92,7 @@ public:
 							movable=false;
 						}
 						else{
+							(move_%2==0) ? beatenFigures1.push_back(tab[y][x]) : beatenFigures2.push_back(tab[y][x]); //add beaten figures
 							movable=true;
 						}
 					}
@@ -130,6 +135,11 @@ public:
 		}
 		tab[y][x]=tab[y_][x_];
 		tab[y_][x_]="##";
+		//Promotion checking
+		if((y==0 && move_%2==0) || (y==7 && move_%2==1))
+		{
+			cout<<"Which one figure do you wanna bring back?: "<<endl;
+		}
 	}
 
 };
@@ -185,7 +195,15 @@ class Tower{
 							break;
 						}
 						else{
-							ifcan=true;
+							if(tab[y][x]!="##")
+							{
+								(counter_%2==0)? beatenFigures1.push_back(tab[y][x]):beatenFigures2.push_back(tab[y][x]);
+								ifcan=true;
+								break;
+							}
+							else{
+								ifcan = true;
+							}
 						}
 					}
 				}
@@ -210,7 +228,15 @@ class Tower{
 							break;
 						}
 						else{
-							ifcan=true;
+							if(tab[y][x]!="##")
+							{
+								(counter_%2==0)? beatenFigures1.push_back(tab[y][x]):beatenFigures2.push_back(tab[y][x]);
+								ifcan=true;
+								break;
+							}
+							else{
+								ifcan = true;
+							}
 						}
 					}
 				}
@@ -286,7 +312,15 @@ class Bishop :public Tower{
 							break;
 						}
 						else{
-							ifcan=true;
+							if(tab[y][x]!="##")
+							{
+								(counter_%2==0)? beatenFigures1.push_back(tab[y][x]):beatenFigures2.push_back(tab[y][x]);
+								ifcan=true;
+								break;
+							}
+							else{
+								ifcan = true;
+							}
 						}
 					}
 				}
@@ -385,6 +419,10 @@ class King{
 					return false;
 				}
 				else{
+					if(tab[y][x]!="##")
+					{
+						(counter_%2==0)? beatenFigures1.push_back(tab[y][x]):beatenFigures2.push_back(tab[y][x]);
+					}
 					return true;
 				}
 		}
@@ -468,7 +506,14 @@ public:
 					cout<<"You can't beat your own figure: "<<tab[y][x]<<endl;
 				}
 			else{
+				if(tab[y][x]!="##")
+				{
+					(counter_%2==0)? beatenFigures1.push_back(tab[y][x]):beatenFigures2.push_back(tab[y][x]);
 					ifcan=true;
+				}
+				else{
+					ifcan = true;
+				}
 			}
 
 			return ifcan;
