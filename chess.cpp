@@ -138,7 +138,12 @@ public:
 		//Promotion checking
 		if((y==0 && move_%2==0) || (y==7 && move_%2==1))
 		{
+			int number;
 			cout<<"Which one figure do you wanna bring back?: "<<endl;
+			cin>>number;
+			(move_%2==0)?  beatenFigures1.erase(beatenFigures1.begin()+number+1):
+			beatenFigures1.erase(beatenFigures1.begin()+number+1);
+			(move_%2==0)?  tab[y][x]=beatenFigures1[number+1]:tab[y][x]=beatenFigures2[number+1];
 		}
 	}
 
@@ -235,7 +240,15 @@ class Tower{
 								break;
 							}
 							else{
-								ifcan = true;
+								if(tab[y][x]!="##")
+								{
+									(counter_%2==0)? beatenFigures1.push_back(tab[y][x]):beatenFigures2.push_back(tab[y][x]);
+									ifcan=true;
+									break;
+								}
+								else{
+									ifcan = true;
+								}
 							}
 						}
 					}
@@ -604,7 +617,7 @@ void board_setup()
         tab [y][7] = "R1";
 }
 
-void view_board()
+void view_board(int counter)
 {
 	//displaying chessboard
     for (int y=-1;y<8;y++){
@@ -613,6 +626,21 @@ void view_board()
 			cout<<"Y/X| ";
 			for(int z=1;z<=8;z++){
 				cout << z << "  | ";
+			}
+			if(counter%2==1)
+			{
+				cout<<"   "<<"Figures beaten by Player 1: ";
+				for(int i=0;i<beatenFigures1.size();i++)
+				{
+					cout<<beatenFigures1[i];
+				}
+			}
+			else{
+				cout<<"   "<<"Figures beaten by Player 2: ";
+				for(int i=0;i<beatenFigures2.size();i++)
+				{
+					cout<<beatenFigures2[i];
+				}
 			}
 			cout<<endl;
 		}
@@ -630,7 +658,7 @@ int main()
 {
 	int i=2;
     board_setup();
-	view_board();
+	view_board(i);
 	int x,y,counter;
 	bool ifmove;
 	while(i<=100)
@@ -662,7 +690,7 @@ int main()
 						if(P.ifMove()==true) //checking if figure isn't blocked (if there is free space)
 						{
 							P.move_pawn();
-							view_board();
+							view_board(i);
 							ifmove=true;
 						}
 						else
@@ -677,7 +705,7 @@ int main()
 						if(T.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							T.move_tower();
-							view_board();
+							view_board(i);
 							ifmove=true;
 						}
 						else{
@@ -691,7 +719,7 @@ int main()
 						if(G.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{	
 							G.move_bishop();
-							view_board();
+							view_board(i);
 							ifmove=true;
 						}
 						else{
@@ -706,7 +734,7 @@ int main()
 						if(Q.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							Q.move_queen();
-							view_board();
+							view_board(i);
 							ifmove=true;
 						}
 						else{
@@ -721,7 +749,7 @@ int main()
 						if(K.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							K.move_king();
-							view_board();
+							view_board(i);
 							ifmove=true;
 						}
 						else{
@@ -735,7 +763,7 @@ int main()
 						if(H.ifMove()==true)//checking if figure isn't blocked (if there is free space)
 						{
 							H.move_horse();
-							view_board();
+							view_board(i);
 							ifmove=true;
 						}
 						else{
