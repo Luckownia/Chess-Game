@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -139,6 +140,21 @@ public:
 		if((y==0 && move_%2==0) || (y==7 && move_%2==1))
 		{
 			int number;
+			if(move_%2==1)
+			{
+				cout<<"Figures beaten by Player 1: ";
+				for(int i=0;i<beatenFigures1.size();i++)
+				{
+					cout<<beatenFigures1[i]<<" ";
+				}
+			}
+			else{
+				cout<<"Figures beaten by Player 2: ";
+				for(int i=0;i<beatenFigures2.size();i++)
+				{
+					cout<<beatenFigures2[i]<<" ";
+				}
+			}
 			cout<<"Which one figure do you wanna bring back?: "<<endl;
 			cin>>number;
 			(move_%2==0)?  beatenFigures1.erase(beatenFigures1.begin()+number+1):
@@ -627,21 +643,6 @@ void view_board(int counter)
 			for(int z=1;z<=8;z++){
 				cout << z << "  | ";
 			}
-			if(counter%2==1)
-			{
-				cout<<"   "<<"Figures beaten by Player 1: ";
-				for(int i=0;i<beatenFigures1.size();i++)
-				{
-					cout<<beatenFigures1[i];
-				}
-			}
-			else{
-				cout<<"   "<<"Figures beaten by Player 2: ";
-				for(int i=0;i<beatenFigures2.size();i++)
-				{
-					cout<<beatenFigures2[i];
-				}
-			}
 			cout<<endl;
 		}
 		else{
@@ -771,6 +772,17 @@ int main()
 							ifmove=false;
 						}
 					}
+					//checking who win game
+					if (find(beatenFigures1.begin(), beatenFigures1.end(),"K2") != beatenFigures1.end()) {
+        				cout << "Player 1 won " <<endl;
+						ifmove=false;
+						break;
+    				} 
+					else if (find(beatenFigures2.begin(), beatenFigures2.end(),"K1") != beatenFigures2.end()) {
+        				cout << "Player 2 won " <<endl;
+						ifmove=false;
+						break;
+    				} 
 			}
 		i++;
 	}
